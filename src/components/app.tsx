@@ -1,34 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import api from '@src/services/apiService';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from '@src/components/appRoutes';
 
 export default function App() {
-  const [title, setTitle] = useState('empty');
-
-  useEffect(() => {
-    const getData = async () => {
-      const response = await api.get(
-        'https://songbook-backend-production.up.railway.app/other'
-      );
-      console.log(response);
-
-      return response;
-    };
-
-    getData()
-      .then((data) => {
-        if (data) setTitle(data.data[0].title);
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-        setTitle('error');
-      });
-  }, []);
-
   return (
     <div>
       <React.StrictMode>
-        <>Hello world </>
-        {title}
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
       </React.StrictMode>
     </div>
   );
