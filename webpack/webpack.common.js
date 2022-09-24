@@ -62,5 +62,15 @@ module.exports = {
       title: 'Hot Module Replacement',
       // favicon: './assets/logo.png',
     }),
+    {
+      apply: (compiler) => {
+        compiler.hooks.done.tap('DonePlugin', () => {
+          console.log('Compile is done !');
+          setTimeout(() => {
+            process.exit(0);
+          });
+        });
+      },
+    },
   ],
 };
