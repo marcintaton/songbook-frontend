@@ -9,12 +9,14 @@ export default function App() {
       const response = await api.get(
         'https://songbook-backend-production.up.railway.app/other'
       );
+      console.log(response);
+
       return response;
     };
 
     getData()
       .then((data) => {
-        if (data) setTitle(data[0].title);
+        if (data) setTitle(data.data[0].title);
       })
       .catch((e: Error) => {
         console.log(e.message);
