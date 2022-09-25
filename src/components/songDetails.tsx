@@ -1,24 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getSongMetadata } from '@src/services/songMetadataService';
-import ISongMetadata, {
-  defaultSongMetadata,
-} from '@src/types/interfaces/iSongMetadata';
-import ISongDetails, {
-  defaultSongDerails,
-} from '@src/types/interfaces/iSongDetails';
-import { getSongDetails } from '@src/services/songDetailsService';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import parseLyrics from '@src/utilities/lyricsParser';
+import ISong from '@src/types/models/iSong';
+import { getSong } from '@src/services/songsService';
 
 export default function SongDetails() {
   const { id } = useParams();
 
-  const [songMetadata, setSongMetadata] =
-    useState<ISongMetadata>(defaultSongMetadata);
-  const [songDetails, setSongDetails] =
-    useState<ISongDetails>(defaultSongDerails);
+  const [song, setSong] = useState<ISong>();
   const [transShift, setTransShift] = useState<number>(0);
   const [parsedLyrics, setParsedLyrics] = useState<ILyricsLine[]>([]);
   const [chords, setChords] = useState<string[]>([]);
@@ -26,53 +17,41 @@ export default function SongDetails() {
   useEffect(() => {
     if (id === undefined) return;
 
-    const getMetadata = async () => {
-      const response = await getSongMetadata(id);
+    const getSongData = async () => {
+      const response = await getSong(id);
       return response.data;
     };
 
-    const getDetails = async () => {
-      const response = await getSongDetails(id);
-      return response.data;
-    };
-
-    getMetadata()
+    getSongData()
       .then((data) => {
-        if (data) setSongMetadata(data);
+        if (data) setSong(data);
       })
       .catch((e: Error) => {
         console.log(e.message);
-        setSongMetadata({} as ISongMetadata);
-      });
-
-    getDetails()
-      .then((data) => {
-        if (data) setSongDetails(data);
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-        setSongDetails({} as ISongDetails);
+        setSong({} as ISong);
       });
   }, []);
 
   useEffect(() => {
-    if (!songDetails.lyrics) return;
+    if (!song?.lyrics) return;
 
     const { parsedLyrics: _parsedLyrics, chordsDetected } = parseLyrics(
-      songDetails.lyrics,
+      song.lyrics,
       transShift
     );
     setParsedLyrics(_parsedLyrics);
     setChords(chordsDetected);
-  }, [transShift, songDetails]);
+  }, [transShift, song]);
+
+  console.log(song);
 
   return (
     <>
-      {songMetadata.tags && songDetails.lyrics && (
+      {song?.lyrics && (
         <>
-          <h4>{songMetadata.title}</h4>
+          <h4>{song.title}</h4>
           <p>Tagi:</p>
-          <div>{songMetadata.tags.join(', ')}</div>
+          <div>{song.tags.join(', ')}</div>
           <br />
           <p>Transponuj:</p>
           <div>
@@ -95,7 +74,7 @@ export default function SongDetails() {
           </div>
           <div>{chords.join(' ')}</div>
           <br />
-          {songDetails && <Lyrics lyrics={parsedLyrics} />}
+          {song && <Lyrics lyrics={parsedLyrics} />}
         </>
       )}
     </>
