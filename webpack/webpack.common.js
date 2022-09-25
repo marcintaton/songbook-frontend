@@ -52,9 +52,9 @@ module.exports = {
     filename: '[name].bundle.js',
   },
   optimization: {
-    // splitChunks: {
-    //   chunks: 'all',
-    // },
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
