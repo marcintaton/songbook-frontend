@@ -9,7 +9,7 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<Navigate to={'/songList'} />} />
         <Route path="/songList" element={<SongList />} />
-        {/* <Route path="/song/:id" element={<SongDetails />} /> */}
+        <Route path="/song/:id" element={<SongDetails />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
