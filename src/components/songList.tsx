@@ -1,17 +1,36 @@
 import { useState, useEffect } from 'react';
+import {
+  Box,
+  Center,
+  Divider,
+  Heading,
+  Input,
+  InputGroup,
+  InputRightElement,
+  VStack,
+  Text,
+  Badge,
+  Tag,
+  GridItem,
+  Grid,
+} from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
-import ISongMetadata from '@src/types/interfaces/iSongMetadata';
-import { getAllSongsMetadata } from '@src/services/songMetadataService';
+import ISongMetadata from '@src/types/models/iSongMetadata';
+import ITag from '@src/types/models/iTag';
+import { getSongsMetadata } from '@src/services/songsService';
+import { getTags } from '@src/services/tagsService';
 
 export default function SongList() {
   const [metadata, setMetadata] = useState<ISongMetadata[]>([]);
-  const [tags, setTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<ITag[]>([]);
+
+  // const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
     const getData = async () => {
-      const response = await getAllSongsMetadata();
-
+      const response = await getSongsMetadata();
       return response.data;
     };
 
@@ -25,63 +44,114 @@ export default function SongList() {
       });
   }, []);
 
-  useEffect(() => {
-    const _tags: string[] = [];
-    metadata.forEach((x) => {
-      x.tags.forEach((tag) => {
-        if (!_tags.includes(tag)) _tags.push(tag);
-      });
-    });
-    setTags(_tags);
-    setSelectedTags(_tags);
-  }, [metadata]);
+  const songs = metadata;
+  const searchFilteredSongs = songs.filter((song) =>
+    song.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const filteredSongs = metadata.filter((meta) => {
-    return selectedTags.filter((st) => meta.tags.includes(st)).length !== 0;
+  const firstLetters = Array.from(
+    new Set(searchFilteredSongs.map((x) => x.title[0]))
+  );
+  const splitSongs = firstLetters.map((fl) => {
+    return searchFilteredSongs.filter((mt) => mt.title[0] === fl);
   });
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getTags();
+      return response.data;
+    };
+
+    getData()
+      .then((data) => {
+        if (data) setTags(data);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+        setTags([]);
+      });
+  }, []);
+
+  console.log(searchTerm);
 
   return (
     <>
-      <p>Filtruj:</p>
-      <div>
-        {tags.map((tag) => {
-          return (
-            <button
-              key={tag}
-              style={{ marginRight: '0.5em' }}
-              onClick={() => {
-                if (selectedTags.includes(tag))
-                  setSelectedTags(selectedTags.filter((_tag) => _tag !== tag));
-                else setSelectedTags([...selectedTags, tag]);
-              }}
-            >
-              <div
-                style={
-                  selectedTags.includes(tag)
-                    ? { color: 'red', fontWeight: 'bold' }
-                    : { color: 'black', fontWeight: 'normal' }
-                }
-              >
-                {tag}
-              </div>
-            </button>
-          );
-        })}
-      </div>
-      <br />
-      Piosenki:
-      <ul>
-        {filteredSongs.map((x) => {
-          return (
-            <li key={x._id}>
-              <Link to={`/song/${x._id}`}>
-                {`${x.title} (${x.tags.join(', ')})`}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-      <br />
+      <Center>
+        <VStack p={'2em'}>
+          <Heading as="h1" size="4xl" textAlign={'center'}>
+            Śpiewnik Oazowy
+          </Heading>
+          <Heading as="h6" size="lg">
+            Oaza Dorosłych Knurów
+          </Heading>
+          <InputGroup pt={'5em'}>
+            <Input
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Szukaj piosenek..."
+              size="lg"
+            />
+            <InputRightElement pt={'5em'} pr={'0.5em'}>
+              {searchTerm !== '' && (
+                <Tag mt={'3.3em'}>{searchFilteredSongs.length}</Tag>
+              )}
+              {searchTerm === '' && <SearchIcon mt={'3em'} color={'grey'} />}
+            </InputRightElement>
+          </InputGroup>
+          <Divider orientation="horizontal" pt={'2em'} />
+          <Grid
+            templateColumns={{ base: 'repeat(2, 1fr)', md: '"repeat(1, 1fr)"' }}
+            gap={6}
+          >
+            <GridItem w="100%">
+              <Box width={'100%'} justifyContent={'left'}>
+                {splitSongs.map((section) => {
+                  const firstLetter = section[0].title[0];
+                  return (
+                    <Box key={firstLetter}>
+                      <Text mt={'1em'} color={'grey'} fontSize="lg">
+                        {firstLetter}
+                      </Text>
+                      <Divider orientation="horizontal" mb={'1em'} />
+                      {section.map((song) => {
+                        return (
+                          <Link
+                            key={song._id}
+                            to={`/song/${song._id}`}
+                          >{`${song.title}`}</Link>
+                        );
+                      })}
+                    </Box>
+                  );
+                })}
+              </Box>
+            </GridItem>
+            <GridItem w="100%">
+              <Box width={'100%'} justifyContent={'left'}>
+                {splitSongs.map((section) => {
+                  const firstLetter = section[0].title[0];
+                  return (
+                    <Box key={firstLetter}>
+                      <Text mt={'1em'} color={'grey'} fontSize="lg">
+                        {firstLetter}
+                      </Text>
+                      <Divider orientation="horizontal" mb={'1em'} />
+                      {section.map((song) => {
+                        return (
+                          <Link
+                            key={song._id}
+                            to={`/song/${song._id}`}
+                          >{`${song.title}`}</Link>
+                        );
+                      })}
+                    </Box>
+                  );
+                })}
+              </Box>
+            </GridItem>
+          </Grid>
+        </VStack>
+      </Center>
     </>
   );
 }
