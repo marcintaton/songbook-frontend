@@ -1,7 +1,9 @@
 import { nanoid } from 'nanoid';
+import transpose from '@src/utilities/transposiotion';
 
 interface IProps {
   lyrics: string;
+  transposeShift: number;
 }
 
 interface ILyricsLine {
@@ -9,25 +11,40 @@ interface ILyricsLine {
   value: string;
 }
 
+interface IChordPosition {
+  chord: string;
+  position: number;
+}
+
 export default function Lyrics(props: IProps) {
-  const { lyrics } = props;
+  const { lyrics, transposeShift } = props;
 
   const reconstructedLyrics: ILyricsLine[] = [];
 
   lyrics.split('\n').forEach((line) => {
     const clearLine = line.replace(/\[[\w#]+]/gm, '');
-    let chordLine = '';
-    let lastChordLength = 0;
+    let caretPosition = 0;
+    const chordPositions: IChordPosition[] = [];
     line.split(/(\[.*?\])/gm).forEach((section) => {
       if (section.match(/\[.*?\]/)) {
         const chord = section.slice(1, -1);
-        chordLine += chord;
-        lastChordLength = chord.length;
+        const transposed = transpose(chord, transposeShift);
+        chordPositions.push({
+          chord: transposed,
+          position: caretPosition,
+        });
       } else {
-        chordLine += ' '.repeat(section.length - lastChordLength);
-        lastChordLength = 0;
+        caretPosition += section.length;
       }
     });
+
+    let chordLine = '';
+
+    chordPositions.forEach((chord) => {
+      chordLine += ' '.repeat(Math.max(chord.position - chordLine.length, 1));
+      chordLine += chord.chord;
+    });
+
     reconstructedLyrics.push({
       type: 'chords',
       value: `${chordLine}\n`,

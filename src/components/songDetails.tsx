@@ -11,21 +11,18 @@ export default function SongDetails() {
 
   const [songMetadata, setSongMetadata] = useState<ISongMetadata>();
   const [songDetails, setSongDetails] = useState<ISongDetails>();
+  const [transShift, setTransShift] = useState<number>(0);
 
   useEffect(() => {
     if (id === undefined) return;
 
     const getMetadata = async () => {
       const response = await getSongMetadata(id);
-      console.log(response.data);
-
       return response.data;
     };
 
     const getDetails = async () => {
       const response = await getSongDetails(id);
-      console.log(response.data);
-
       return response.data;
     };
 
@@ -48,13 +45,31 @@ export default function SongDetails() {
       });
   }, []);
 
-  if (songDetails) console.log(songDetails.lyrics);
-
   return (
     <>
       <h4>{songMetadata && songMetadata.title}</h4>
+      <div>
+        <button
+          onClick={() => {
+            setTransShift(transShift + 1);
+          }}
+          style={{ marginRight: '1em', width: '2em' }}
+        >
+          +
+        </button>
+        <button
+          onClick={() => {
+            setTransShift(transShift - 1);
+          }}
+          style={{ marginRight: '1em', width: '2em' }}
+        >
+          -
+        </button>
+      </div>
       <br />
-      {songDetails && <Lyrics lyrics={songDetails?.lyrics} />}
+      {songDetails && (
+        <Lyrics lyrics={songDetails?.lyrics} transposeShift={transShift} />
+      )}
     </>
   );
 }

@@ -26,7 +26,7 @@ export default function SongList() {
 
   return (
     <>
-      Song list goes here
+      Piosenki
       <ul>
         {metadata.map((x) => {
           return (
