@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import AppRoutes from '@src/components/appRoutes';
@@ -8,11 +9,13 @@ export default function App() {
   return (
     <div>
       <React.StrictMode>
-        <BrowserRouter>
-          <ErrorBoundary FallbackComponent={RenderError}>
-            <AppRoutes />
-          </ErrorBoundary>
-        </BrowserRouter>
+        <ChakraProvider>
+          <BrowserRouter>
+            <ErrorBoundary FallbackComponent={RenderError}>
+              <AppRoutes />
+            </ErrorBoundary>
+          </BrowserRouter>
+        </ChakraProvider>
       </React.StrictMode>
     </div>
   );
