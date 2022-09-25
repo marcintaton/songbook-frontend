@@ -56,6 +56,8 @@ export default function SongDetails() {
   }, []);
 
   useEffect(() => {
+    if (!songDetails.lyrics) return;
+
     const { parsedLyrics: _parsedLyrics, chordsDetected } = parseLyrics(
       songDetails.lyrics,
       transShift
@@ -66,32 +68,36 @@ export default function SongDetails() {
 
   return (
     <>
-      <h4>{songMetadata.title}</h4>
-      <p>Tagi:</p>
-      <div>{songMetadata.tags.join(', ')}</div>
-      <br />
-      <p>Transponuj:</p>
-      <div>
-        <button
-          onClick={() => {
-            setTransShift(transShift + 1);
-          }}
-          style={{ marginRight: '1em', width: '2em' }}
-        >
-          +
-        </button>
-        <button
-          onClick={() => {
-            setTransShift(transShift - 1);
-          }}
-          style={{ marginRight: '1em', width: '2em' }}
-        >
-          -
-        </button>
-      </div>
-      <div>{chords.join(' ')}</div>
-      <br />
-      {songDetails && <Lyrics lyrics={parsedLyrics} />}
+      {songMetadata.tags && songDetails.lyrics && (
+        <>
+          <h4>{songMetadata.title}</h4>
+          <p>Tagi:</p>
+          <div>{songMetadata.tags.join(', ')}</div>
+          <br />
+          <p>Transponuj:</p>
+          <div>
+            <button
+              onClick={() => {
+                setTransShift(transShift + 1);
+              }}
+              style={{ marginRight: '1em', width: '2em' }}
+            >
+              +
+            </button>
+            <button
+              onClick={() => {
+                setTransShift(transShift - 1);
+              }}
+              style={{ marginRight: '1em', width: '2em' }}
+            >
+              -
+            </button>
+          </div>
+          <div>{chords.join(' ')}</div>
+          <br />
+          {songDetails && <Lyrics lyrics={parsedLyrics} />}
+        </>
+      )}
     </>
   );
 }
