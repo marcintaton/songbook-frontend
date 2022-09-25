@@ -68,7 +68,7 @@ export default function SongDetails() {
     <>
       <h4>{songMetadata.title}</h4>
       <p>Tagi:</p>
-      <div>{songMetadata.tags.join(' ')}</div>
+      <div>{songMetadata.tags.join(', ')}</div>
       <br />
       <p>Transponuj:</p>
       <div>
