@@ -36,8 +36,6 @@ export default function SongList() {
     setSelectedTags(_tags);
   }, [metadata]);
 
-  console.log(selectedTags);
-
   const filteredSongs = metadata.filter((meta) => {
     return selectedTags.filter((st) => meta.tags.includes(st)).length !== 0;
   });
