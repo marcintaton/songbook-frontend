@@ -81,7 +81,7 @@ export default function SongList() {
           <Heading as="h1" size="4xl" textAlign={'center'}>
             Śpiewnik Oazowy
           </Heading>
-          <Heading as="h6" size="lg">
+          <Heading as="h6" size="lg" textAlign={'center'}>
             Oaza Dorosłych Knurów
           </Heading>
           <InputGroup pt={'5em'}>
@@ -99,57 +99,28 @@ export default function SongList() {
             </InputRightElement>
           </InputGroup>
           <Divider orientation="horizontal" pt={'2em'} />
-          <Grid
-            templateColumns={{ base: 'repeat(2, 1fr)', md: '"repeat(1, 1fr)"' }}
-            gap={6}
-          >
-            <GridItem w="100%">
-              <Box width={'100%'} justifyContent={'left'}>
-                {splitSongs.map((section) => {
-                  const firstLetter = section[0].title[0];
-                  return (
-                    <Box key={firstLetter}>
-                      <Text mt={'1em'} color={'grey'} fontSize="lg">
-                        {firstLetter}
-                      </Text>
-                      <Divider orientation="horizontal" mb={'1em'} />
-                      {section.map((song) => {
-                        return (
-                          <Link
-                            key={song._id}
-                            to={`/song/${song._id}`}
-                          >{`${song.title}`}</Link>
-                        );
-                      })}
-                    </Box>
-                  );
-                })}
-              </Box>
-            </GridItem>
-            <GridItem w="100%">
-              <Box width={'100%'} justifyContent={'left'}>
-                {splitSongs.map((section) => {
-                  const firstLetter = section[0].title[0];
-                  return (
-                    <Box key={firstLetter}>
-                      <Text mt={'1em'} color={'grey'} fontSize="lg">
-                        {firstLetter}
-                      </Text>
-                      <Divider orientation="horizontal" mb={'1em'} />
-                      {section.map((song) => {
-                        return (
-                          <Link
-                            key={song._id}
-                            to={`/song/${song._id}`}
-                          >{`${song.title}`}</Link>
-                        );
-                      })}
-                    </Box>
-                  );
-                })}
-              </Box>
-            </GridItem>
-          </Grid>
+
+          <Box width={'100%'} justifyContent={'left'}>
+            {splitSongs.map((section) => {
+              const firstLetter = section[0].title[0];
+              return (
+                <Box key={firstLetter}>
+                  <Text mt={'1em'} color={'grey'} fontSize="lg">
+                    {firstLetter}
+                  </Text>
+                  <Divider orientation="horizontal" mb={'1em'} />
+                  {section.map((song) => {
+                    return (
+                      <Link
+                        key={song._id}
+                        to={`/song/${song._id}`}
+                      >{`${song.title}`}</Link>
+                    );
+                  })}
+                </Box>
+              );
+            })}
+          </Box>
         </VStack>
       </Center>
     </>
