@@ -1,5 +1,7 @@
-// import 'font-awesome/css/font-awesome.css';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from '@src/components/app';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(container!);
+root.render(<App />);
