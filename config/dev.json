@@ -1,3 +1,4 @@
 {
-  "name": "dev"
+  "name": "dev",
+  "api": "http://localhost:3001"
 }

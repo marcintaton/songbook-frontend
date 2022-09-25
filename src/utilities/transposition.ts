@@ -13,7 +13,7 @@ const chords = [
   'Gis',
 ];
 
-export default function transpose(chord: string, shift: number) {
+export default function transpose(chord: string, shiftBy: number) {
   const isMinor = chord[0].toLowerCase() === chord[0];
   const modifierMatch = chord.match(/[^A-Za-z]+/);
   const modifier = modifierMatch !== null ? modifierMatch[0] : '';
@@ -27,9 +27,9 @@ export default function transpose(chord: string, shift: number) {
   }
 
   const newIndex =
-    (currentIndex + shift > 0
-      ? currentIndex + shift
-      : chords.length - (currentIndex + shift)) % chords.length;
+    (currentIndex + shiftBy > 0
+      ? currentIndex + shiftBy
+      : chords.length - (currentIndex + shiftBy)) % chords.length;
 
   let newChord = chords[newIndex];
   if (isMinor) newChord = newChord.toLocaleLowerCase();
