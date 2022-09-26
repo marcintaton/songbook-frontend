@@ -108,7 +108,7 @@ export default function Song() {
             <Divider orientation="horizontal" borderColor={'lightgrey'} />
 
             <Box pt={'3em'}>
-              <Lyrics lyrics={parsedLyrics} size={'1.5em'} />
+              <Lyrics lyrics={parsedLyrics} size={'1em'} />
             </Box>
           </VStack>
         )}
