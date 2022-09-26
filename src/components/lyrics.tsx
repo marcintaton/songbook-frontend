@@ -4,7 +4,7 @@ import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 
 interface IProps {
   lyrics: ILyricsLine[];
-  size: number;
+  size: string;
 }
 
 export default function Lyrics(props: IProps) {
