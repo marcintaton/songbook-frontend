@@ -50,7 +50,7 @@ export default function TagSelector(props: IProps) {
               >
                 Wszystkie
               </Tag>
-              {[...tags, ...tags, ...tags, ...tags].map((tag) => {
+              {tags.map((tag) => {
                 const isSelected = selectedTags.includes(tag);
                 return (
                   <Tag
