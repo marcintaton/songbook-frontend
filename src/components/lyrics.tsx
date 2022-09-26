@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Stack, Text } from '@chakra-ui/react';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 
 interface IProps {
@@ -20,12 +20,15 @@ export default function Lyrics(props: IProps) {
         }}
       >
         {lyrics.map((line) => {
-          const color = line.type === 'text' ? 'black' : 'purple';
-          const weight = line.type === 'text' ? 'normal' : 'bold';
           return (
-            <Text color={color} fontWeight={weight} key={nanoid()}>
-              {line.value}
-            </Text>
+            <Stack key={nanoid()}>
+              <Text color={'purple'} fontWeight={'bold'}>
+                {line.chordLine}
+              </Text>
+              <Text color={'black'} fontWeight={'normal'}>
+                {line.textLine}
+              </Text>
+            </Stack>
           );
         })}
       </Box>

@@ -25,7 +25,7 @@ export default function Song() {
   const [song, setSong] = useState<ISong>();
   const [transShift, setTransShift] = useState<number>(0);
   const [fontSize, setFontSize] = useState<number>(1.2);
-  const [parsedLyrics, setParsedLyrics] = useState<ILyricsLine[]>([]);
+  const [lyrics, setLyrics] = useState<ILyricsLine[]>([]);
   const [chords, setChords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -35,11 +35,11 @@ export default function Song() {
   useEffect(() => {
     if (!song?.lyrics) return;
 
-    const { parsedLyrics: _parsedLyrics, chordsDetected } = parseLyrics(
+    const { lyrics: _lyrics, chordsDetected } = parseLyrics(
       song.lyrics,
       transShift
     );
-    setParsedLyrics(_parsedLyrics);
+    setLyrics(_lyrics);
     setChords(chordsDetected);
   }, [transShift, song]);
 
@@ -132,7 +132,7 @@ export default function Song() {
             <Divider orientation="horizontal" borderColor={'lightgrey'} />
 
             <Box pt={'3em'}>
-              <Lyrics lyrics={parsedLyrics} size={`${fontSize}em`} />
+              <Lyrics lyrics={lyrics} size={`${fontSize}em`} />
             </Box>
           </VStack>
         )}

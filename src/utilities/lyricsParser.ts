@@ -3,7 +3,7 @@ import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import transpose from '@src/utilities/transposition';
 
 export default function parseLyrics(_lyrics: string, _transposeShift: number) {
-  const parsedLyrics: ILyricsLine[] = [];
+  const lyrics: ILyricsLine[] = [];
   const chordsDetected: string[] = [];
 
   _lyrics.split('\n').forEach((line) => {
@@ -32,19 +32,14 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
       chordLine += chord.chord;
     });
 
-    if (chordLine !== '')
-      parsedLyrics.push({
-        type: 'chords',
-        value: `${chordLine}\n`,
-      });
-    parsedLyrics.push({
-      type: 'text',
-      value: `${clearLine}\n`,
+    lyrics.push({
+      chordLine: `${chordLine}\n`,
+      textLine: `${clearLine}\n`,
     });
   });
 
   return {
-    parsedLyrics,
+    lyrics,
     chordsDetected,
   };
 }
