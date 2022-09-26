@@ -24,6 +24,7 @@ export default function Song() {
 
   const [song, setSong] = useState<ISong>();
   const [transShift, setTransShift] = useState<number>(0);
+  const [fontSize, setFontSize] = useState<number>(1.2);
   const [parsedLyrics, setParsedLyrics] = useState<ILyricsLine[]>([]);
   const [chords, setChords] = useState<string[]>([]);
 
@@ -71,6 +72,29 @@ export default function Song() {
               borderColor={'lightgrey'}
             />
             <Box>
+              <Tooltip label="Powiększ czcionkę">
+                <Button
+                  marginInline={'0.5em'}
+                  size={'sm'}
+                  colorScheme="purple"
+                  variant="solid"
+                  onClick={() => setFontSize(Math.min(2.0, fontSize + 0.1))}
+                >
+                  A
+                </Button>
+              </Tooltip>
+              <Tooltip label="Zmniejsz czcionkę">
+                <Button
+                  marginInline={'0.5em'}
+                  size={'sm'}
+                  colorScheme="purple"
+                  variant="solid"
+                  onClick={() => setFontSize(Math.max(0.5, fontSize - 0.1))}
+                >
+                  a
+                </Button>
+              </Tooltip>
+
               <Tooltip label="Transponuj w górę">
                 <Button
                   marginInline={'0.5em'}
@@ -108,7 +132,7 @@ export default function Song() {
             <Divider orientation="horizontal" borderColor={'lightgrey'} />
 
             <Box pt={'3em'}>
-              <Lyrics lyrics={parsedLyrics} size={'1em'} />
+              <Lyrics lyrics={parsedLyrics} size={`${fontSize}em`} />
             </Box>
           </VStack>
         )}
