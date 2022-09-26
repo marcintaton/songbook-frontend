@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Box, Divider, Tag, VStack } from '@chakra-ui/react';
+import { Link, useParams } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Divider,
+  Icon,
+  Tag,
+  Tooltip,
+  VStack,
+} from '@chakra-ui/react';
+import { HiPlus, HiMinus, HiPrinter } from 'react-icons/hi';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import parseLyrics from '@src/utilities/lyricsParser';
@@ -38,7 +47,11 @@ export default function Song() {
       <ViewRoot>
         {song && (
           <VStack p={'2em'}>
-            <HeadingMain size="md" title={song?.title} />
+            <Box alignSelf={'left'}>
+              <Link to={`/`}>{`Powrót`}</Link>
+            </Box>
+
+            <HeadingMain size="lg" title={song?.title} />
             <Box align={'center'} pt={'3em'}>
               {song.tags.map((tag) => (
                 <Tag
@@ -57,42 +70,49 @@ export default function Song() {
               pb={'3em'}
               borderColor={'lightgrey'}
             />
+            <Box>
+              <Tooltip label="Transponuj w górę">
+                <Button
+                  marginInline={'0.5em'}
+                  size={'sm'}
+                  colorScheme="purple"
+                  variant="solid"
+                  onClick={() => setTransShift(transShift + 1)}
+                >
+                  <Icon as={HiPlus} />
+                </Button>
+              </Tooltip>
+              <Tooltip label="Transponuj w dół">
+                <Button
+                  marginInline={'0.5em'}
+                  size={'sm'}
+                  colorScheme="purple"
+                  variant="solid"
+                  onClick={() => setTransShift(transShift - 1)}
+                >
+                  <Icon as={HiMinus} />
+                </Button>
+              </Tooltip>
+              <Tooltip label="Dodaj do wydruku">
+                <Button
+                  marginInline={'0.5em'}
+                  size={'sm'}
+                  colorScheme="purple"
+                  variant="solid"
+                  onClick={() => {}}
+                >
+                  <Icon as={HiPrinter} />
+                </Button>
+              </Tooltip>
+            </Box>
+            <Divider orientation="horizontal" borderColor={'lightgrey'} />
 
             <Box pt={'3em'}>
-              <Lyrics lyrics={parsedLyrics} />
+              <Lyrics lyrics={parsedLyrics} size={'1.5em'} />
             </Box>
           </VStack>
         )}
       </ViewRoot>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      {song?.lyrics && (
-        <>
-          <p>Transponuj:</p>
-          <div>
-            <button
-              onClick={() => {
-                setTransShift(transShift + 1);
-              }}
-              style={{ marginRight: '1em', width: '2em' }}
-            >
-              +
-            </button>
-            <button
-              onClick={() => {
-                setTransShift(transShift - 1);
-              }}
-              style={{ marginRight: '1em', width: '2em' }}
-            >
-              -
-            </button>
-          </div>
-          <br />
-        </>
-      )}
     </>
   );
 }
