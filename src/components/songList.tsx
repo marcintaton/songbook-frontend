@@ -24,6 +24,7 @@ import ISongMetadata from '@src/types/models/iSongMetadata';
 import ITag from '@src/types/models/iTag';
 import { getSongsMetadata } from '@src/services/songsService';
 import { getTags } from '@src/services/tagsService';
+import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
 
 export default function SongList() {
   const [metadata, setMetadata] = useState<ISongMetadata[]>([]);
@@ -33,38 +34,8 @@ export default function SongList() {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
-    const getData = async () => {
-      const response = await getSongsMetadata();
-      return response.data;
-    };
-
-    getData()
-      .then((data) => {
-        if (data) setMetadata(data);
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-        setMetadata([]);
-      });
+    apiFetchDelegate<ISongMetadata[]>(getSongsMetadata, [setMetadata], []);
   }, []);
-
-  const songs = metadata;
-  const tagFilteredSongs = songs.filter((song) =>
-    song.tags.some((tag) => selectedTags.map((x) => x.name).includes(tag))
-  );
-
-  const areTagFiltersActive = tags.length !== selectedTags.length;
-
-  const searchFilteredSongs = tagFilteredSongs.filter((song) =>
-    song.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const firstLetters = Array.from(
-    new Set(searchFilteredSongs.map((x) => x.title[0]))
-  );
-  const splitSongs = firstLetters.map((fl) => {
-    return searchFilteredSongs.filter((mt) => mt.title[0] === fl);
-  });
 
   useEffect(() => {
     const getData = async () => {
@@ -85,6 +56,24 @@ export default function SongList() {
         setSelectedTags([]);
       });
   }, []);
+
+  const songs = metadata;
+  const tagFilteredSongs = songs.filter((song) =>
+    song.tags.some((tag) => selectedTags.map((x) => x.name).includes(tag))
+  );
+
+  const areTagFiltersActive = tags.length !== selectedTags.length;
+
+  const searchFilteredSongs = tagFilteredSongs.filter((song) =>
+    song.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const firstLetters = Array.from(
+    new Set(searchFilteredSongs.map((x) => x.title[0]))
+  );
+  const splitSongs = firstLetters.map((fl) => {
+    return searchFilteredSongs.filter((mt) => mt.title[0] === fl);
+  });
 
   return (
     <>

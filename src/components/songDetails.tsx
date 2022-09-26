@@ -5,6 +5,7 @@ import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import parseLyrics from '@src/utilities/lyricsParser';
 import ISong from '@src/types/models/iSong';
 import { getSong } from '@src/services/songsService';
+import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
 
 export default function SongDetails() {
   const { id } = useParams();
@@ -15,21 +16,7 @@ export default function SongDetails() {
   const [chords, setChords] = useState<string[]>([]);
 
   useEffect(() => {
-    if (id === undefined) return;
-
-    const getSongData = async () => {
-      const response = await getSong(id);
-      return response.data;
-    };
-
-    getSongData()
-      .then((data) => {
-        if (data) setSong(data);
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-        setSong({} as ISong);
-      });
+    apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
   }, []);
 
   useEffect(() => {
@@ -42,8 +29,6 @@ export default function SongDetails() {
     setParsedLyrics(_parsedLyrics);
     setChords(chordsDetected);
   }, [transShift, song]);
-
-  console.log(song);
 
   return (
     <>
