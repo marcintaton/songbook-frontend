@@ -1,6 +1,12 @@
 import { SimpleGrid, GridItem, Center } from '@chakra-ui/react';
 
-export default function ViewRoot(props: React.PropsWithChildren) {
+interface IProps extends React.PropsWithChildren {
+  maxWidth?: string;
+}
+
+export default function ViewRoot(props: IProps) {
+  const { maxWidth } = props;
+
   return (
     <SimpleGrid
       columns={[1, 1, 3]}
@@ -8,7 +14,7 @@ export default function ViewRoot(props: React.PropsWithChildren) {
     >
       <GridItem colSpan={[0, 0, 1]}></GridItem>
       <GridItem colSpan={[0, 0, 3]}>
-        <Center margin={'auto'} maxWidth={'41.8em'}>
+        <Center margin={'auto'} maxWidth={maxWidth || 'auto'}>
           {props.children}
         </Center>
       </GridItem>
