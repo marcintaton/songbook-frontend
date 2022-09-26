@@ -44,22 +44,24 @@ export default function Lyrics(props: IProps) {
                 {line.value.split('').map((char) => (
                   <Stack key={nanoid()}>
                     <Text
-                      sx={
-                        {
-                          // position: 'relative',
-                          // left: chord.position,
-                          // top: 0,
-                          // whiteSpace: 'pre-wrap',
-                          // fontFamily: 'monospace',
-                        }
-                      }
+                      sx={{
+                        whiteSpace: 'pre-wrap',
+                        fontFamily: 'monospace',
+                      }}
                       key={nanoid()}
                       color={'purple'}
                       fontWeight={'bold'}
                     >
                       {'e'}
                     </Text>
-                    <Text>{char}</Text>
+                    <Text
+                      sx={{
+                        whiteSpace: 'pre-wrap',
+                        fontFamily: 'monospace',
+                      }}
+                    >
+                      {char}
+                    </Text>
                   </Stack>
                 ))}
               </Flex>
