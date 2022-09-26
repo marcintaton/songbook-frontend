@@ -46,7 +46,11 @@ export default function MainView() {
     <>
       <ViewRoot>
         <VStack p={'2em'}>
-          <HeadingMain size="lg" />
+          <HeadingMain
+            size="lg"
+            title={'Śpiewnik Oazowy'}
+            subTitle={'Oaza Dorosłych Knurów'}
+          />
           <SearchBox
             onInputChange={(v) => setSearchTerm(v)}
             value={searchTerm}

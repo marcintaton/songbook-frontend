@@ -1,14 +1,17 @@
 import { Heading } from '@chakra-ui/react';
 
 interface IProps {
-  size: 'sm' | 'lg';
+  size: 'sm' | 'md' | 'lg';
+  title: string;
+  subTitle?: string;
 }
 
 export default function HeadingMain(props: IProps) {
-  const { size } = props;
+  const { size, title, subTitle } = props;
 
-  const titleSize = size === 'lg' ? '4xl' : 'lg';
-  const subTitleSize = size === 'lg' ? 'lg' : 'sm';
+  let titleSize = 'lg';
+  if (size === 'md') titleSize = '2xl';
+  if (size === 'lg') titleSize = '4xl';
 
   return (
     <>
@@ -16,15 +19,17 @@ export default function HeadingMain(props: IProps) {
         pt={'0.4em'}
         as="h1"
         size={titleSize}
-        textAlign={'center'}
         bgGradient={'linear(to-r, blue.500, purple.500)'}
         bgClip={'text'}
+        textAlign={'center'}
       >
-        Śpiewnik Oazowy
+        {title}
       </Heading>
-      <Heading as="h6" size={subTitleSize} textAlign={'center'}>
-        Oaza Dorosłych Knurów
-      </Heading>
+      {subTitle && (
+        <Heading as="h1" size={size} textAlign={'center'}>
+          {subTitle}
+        </Heading>
+      )}
     </>
   );
 }

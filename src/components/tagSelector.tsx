@@ -58,6 +58,7 @@ export default function TagSelector(props: IProps) {
                     variant={isSelected ? 'solid' : 'subtle'}
                     key={tag._id}
                     m={'0.1em'}
+                    as={'button'}
                     onClick={() => {
                       if (isSelected)
                         setSelected([

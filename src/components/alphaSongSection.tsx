@@ -14,7 +14,7 @@ export default function AlphaSongSection(props: IProps) {
       <Text mt={'1em'} color={'grey'} fontSize="lg">
         {letter}
       </Text>
-      <Divider orientation="horizontal" mb={'1em'} />
+      <Divider orientation="horizontal" mb={'1em'} borderColor={'lightgrey'} />
       {section.map((song) => {
         return (
           <Link key={song._id} to={`/song/${song._id}`}>{`${song.title}`}</Link>
