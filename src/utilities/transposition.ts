@@ -23,7 +23,7 @@ export default function transpose(chord: string, shiftBy: number) {
   const currentIndex = chords.indexOf(upCased);
 
   if (currentIndex === -1) {
-    throw new Error('Chord not recognized');
+    throw new Error(`Chord not recognized: ${chord}`);
   }
 
   const newIndex =
