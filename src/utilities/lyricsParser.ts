@@ -10,6 +10,7 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
     const clearLine = line.replace(/\[[\w#]+]/gm, '');
     let caretPosition = 0;
     const chordPositions: IChordPosition[] = [];
+
     line.split(/(\[.*?\])/gm).forEach((section) => {
       if (section.match(/\[.*?\]/)) {
         const chord = section.slice(1, -1);
@@ -33,6 +34,7 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
     });
 
     lyrics.push({
+      chordPositions,
       chordLine: `${chordLine}\n`,
       textLine: `${clearLine}\n`,
     });
