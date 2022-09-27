@@ -41,7 +41,7 @@ export default function Song() {
 
   return (
     <>
-      <ViewRoot>
+      <ViewRoot maxWidth="40em">
         {song && (
           <VStack p={'2em'}>
             <Box alignSelf={'left'}>
