@@ -1,5 +1,5 @@
-import { Box, Divider, Text } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Box, Divider, Flex, Text } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import ISongMetadata from '@src/types/models/iSongMetadata';
 
 interface IProps {
@@ -9,6 +9,7 @@ interface IProps {
 
 export default function AlphaSongSection(props: IProps) {
   const { letter, section } = props;
+  const navigate = useNavigate();
   return (
     <Box key={letter}>
       <Text mt={'1em'} color={'grey'} fontSize="lg">
@@ -17,7 +18,18 @@ export default function AlphaSongSection(props: IProps) {
       <Divider orientation="horizontal" mb={'1em'} borderColor={'lightgrey'} />
       {section.map((song) => {
         return (
-          <Link key={song._id} to={`/song/${song._id}`}>{`${song.title}`}</Link>
+          <Flex
+            as={'button'}
+            _active={{
+              transform: 'scale(0.98)',
+            }}
+            width={'100%'}
+            onClick={() => navigate(`/song/${song._id}`)}
+            key={song._id}
+            paddingBlock={'0.5em'}
+          >
+            {`${song.title}`}
+          </Flex>
         );
       })}
     </Box>
