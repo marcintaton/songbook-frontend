@@ -49,7 +49,7 @@ export default function Song() {
             </Box>
 
             <HeadingMain size="lg" title={song?.title} />
-            <Box align={'center'} pt={'3em'}>
+            <Box align={'center'} pt={'1em'}>
               {song.tags.map((tag) => (
                 <Tag
                   backgroundColor={'blue'}
