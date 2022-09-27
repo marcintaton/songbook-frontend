@@ -17,6 +17,7 @@ export default function HeadingMain(props: IProps) {
     <>
       <Heading
         pt={'0.4em'}
+        pb={'0.4em'}
         as="h1"
         size={titleSize}
         bgGradient={'linear(to-r, blue.500, purple.500)'}
@@ -26,7 +27,7 @@ export default function HeadingMain(props: IProps) {
         {title}
       </Heading>
       {subTitle && (
-        <Heading as="h1" size={size} textAlign={'center'}>
+        <Heading as="h1" size={size} textAlign={'center'} pt={'0em'}>
           {subTitle}
         </Heading>
       )}

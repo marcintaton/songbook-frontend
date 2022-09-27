@@ -48,7 +48,7 @@ export default function MainView() {
         <VStack p={'2em'}>
           <HeadingMain
             size="lg"
-            title={'Śpiewnik Oazowy'}
+            title={'Śpiewnik'}
             subTitle={'Oaza Dorosłych Knurów'}
           />
           <SearchBox
