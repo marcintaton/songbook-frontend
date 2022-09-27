@@ -44,7 +44,7 @@ export default function MainView() {
 
   return (
     <>
-      <ViewRoot maxWidth="41.8em">
+      <ViewRoot maxWidth="40em">
         <VStack p={'2em'}>
           <HeadingMain
             size="lg"
