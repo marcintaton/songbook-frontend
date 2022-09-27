@@ -8,6 +8,7 @@ import {
   Tag,
   Tooltip,
   VStack,
+  Text,
 } from '@chakra-ui/react';
 import { HiPlus, HiMinus, HiPrinter } from 'react-icons/hi';
 import Lyrics from '@src/components/lyrics';
@@ -98,7 +99,7 @@ export default function Song() {
                   variant="solid"
                   onClick={() => setTransShift(transShift + 1)}
                 >
-                  <Icon as={HiPlus} />
+                  ♯
                 </Button>
               </Tooltip>
               <Tooltip label="Transponuj w dół">
@@ -109,7 +110,7 @@ export default function Song() {
                   variant="solid"
                   onClick={() => setTransShift(transShift - 1)}
                 >
-                  <Icon as={HiMinus} />
+                  ♭
                 </Button>
               </Tooltip>
               <Tooltip label="Dodaj do wydruku">
