@@ -41,6 +41,7 @@ export default function Lyrics(props: IProps) {
                     <Text
                       sx={{
                         marginTop: '0em!important',
+                        color: '#444444',
                       }}
                     >
                       {word.word}
