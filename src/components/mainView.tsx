@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { VStack } from '@chakra-ui/react';
-import Cookies from 'universal-cookie';
 import ISongMetadata from '@src/types/models/iSongMetadata';
 import ITag from '@src/types/models/iTag';
 import { getSongsMetadata } from '@src/services/songsService';
@@ -19,28 +18,13 @@ export default function MainView() {
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const cookies = new Cookies();
-
   useEffect(() => {
     apiFetchDelegate<ISongMetadata[]>(getSongsMetadata, [setMetadata], []);
   }, []);
 
   useEffect(() => {
-    cookies.set('songs-metadata', {
-      data: metadata,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metadata]);
-
-  useEffect(() => {
     apiFetchDelegate<ITag[]>(getTags, [setTags, setSelectedTags], []);
   }, []);
-
-  const cachedMetadata = cookies.get('songs-metadata');
-  if (cachedMetadata && metadata === []) {
-    setMetadata(cachedMetadata);
-    console.log('XD');
-  }
 
   const songs = metadata;
   const tagFilteredSongs = songs.filter((song) =>
