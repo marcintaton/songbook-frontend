@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { Box, Container, Flex, Stack, Text, VStack } from '@chakra-ui/react';
+import { Box, Flex, Stack, Text } from '@chakra-ui/react';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 
 interface IProps {
@@ -20,50 +20,34 @@ export default function Lyrics(props: IProps) {
         }}
       >
         {lyrics.map((line) => {
-          const _lineWords = line.textLine.split(' ');
-          const lineWords = [];
-          for (let i = 0; i < _lineWords.length; i += 1) {
-            const fcp = _lineWords
-              .slice(0, i)
-              .reduce((partial, a) => partial + a.length + 1, 0);
-            lineWords.push({
-              word: `${_lineWords[i]} `,
-              firstCharPos: fcp,
-              boundChords: line.chordPositions.filter(
-                (chord) =>
-                  chord.position >= fcp &&
-                  chord.position < fcp + _lineWords[i].length
-              ),
-            });
-          }
-
-          // console.log(line.chordPositions);
-          // console.log(lineWords);
-
+          const areChordsPresent =
+            line.lineWords.filter((word) => word.chords !== '.').length !== 0;
           return (
-            <Flex key={nanoid()}>
-              {lineWords.map((word) => (
-                <VStack key={nanoid()}>
-                  <Flex
-                    sx={{
-                      fontWeight: 'bold',
-                      color: 'purple',
-                    }}
-                  >
-                    {word.boundChords.length !== 0
-                      ? word.boundChords.map((c) => c.chord)
-                      : '.'}
-                  </Flex>
-                  <Flex
-                    sx={{
-                      whiteSpace: 'pre-wrap',
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {word.word}
-                  </Flex>
-                </VStack>
-              ))}
+            <Flex wrap={'wrap'} key={nanoid()}>
+              {line.lineWords.map((word) => {
+                return (
+                  <Stack key={nanoid()} marginTop={'1em'}>
+                    {areChordsPresent && (
+                      <Flex
+                        sx={{
+                          fontWeight: 'bold',
+                          color: 'purple',
+                          opacity: word.chords !== '.' ? '1' : '0',
+                        }}
+                      >
+                        {word.chords}
+                      </Flex>
+                    )}
+                    <Text
+                      sx={{
+                        marginTop: '0em!important',
+                      }}
+                    >
+                      {word.word}
+                    </Text>
+                  </Stack>
+                );
+              })}
             </Flex>
           );
         })}

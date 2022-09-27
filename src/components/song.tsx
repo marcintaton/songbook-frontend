@@ -26,7 +26,6 @@ export default function Song() {
   const [transShift, setTransShift] = useState<number>(0);
   const [fontSize, setFontSize] = useState<number>(1.2);
   const [lyrics, setLyrics] = useState<ILyricsLine[]>([]);
-  const [chords, setChords] = useState<string[]>([]);
 
   useEffect(() => {
     apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
@@ -35,12 +34,8 @@ export default function Song() {
   useEffect(() => {
     if (!song?.lyrics) return;
 
-    const { lyrics: _lyrics, chordsDetected } = parseLyrics(
-      song.lyrics,
-      transShift
-    );
+    const { lyrics: _lyrics } = parseLyrics(song.lyrics, transShift);
     setLyrics(_lyrics);
-    setChords(chordsDetected);
   }, [transShift, song]);
 
   return (

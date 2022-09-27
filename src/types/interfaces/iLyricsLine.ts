@@ -1,7 +1,6 @@
-import IChordPosition from './iChordPosition';
+import ILyricsWord from './iLyricsWord';
 
 export default interface ILyricsLine {
-  chordPositions: IChordPosition[];
+  lineWords: ILyricsWord[];
   textLine: string;
-  chordLine: string;
 }
