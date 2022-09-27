@@ -29,10 +29,11 @@ export default function transpose(chord: string, shiftBy: number) {
   const newIndex =
     (currentIndex + shiftBy > 0
       ? currentIndex + shiftBy
-      : chords.length - (currentIndex + shiftBy)) % chords.length;
+      : chords.length - ((-1 * (currentIndex + shiftBy)) % chords.length)) %
+    chords.length;
 
   let newChord = chords[newIndex];
-  if (isMinor) newChord = newChord.toLocaleLowerCase();
+  if (isMinor) newChord = newChord.toLowerCase();
   newChord += modifier;
 
   return newChord;
