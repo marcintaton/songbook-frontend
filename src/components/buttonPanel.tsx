@@ -1,4 +1,10 @@
-import { Tooltip, Button, Box, ButtonGroup } from '@chakra-ui/react';
+import {
+  Tooltip,
+  Button,
+  Box,
+  ButtonGroup,
+  SimpleGrid,
+} from '@chakra-ui/react';
 
 interface IProps {
   buttons: {
@@ -20,18 +26,20 @@ export default function ButtonPanel(props: IProps) {
   return (
     <Box>
       <ButtonGroup isAttached={isAttached} variant={variant} size={size}>
-        {buttons.map((button) => (
-          <Tooltip key={button.key} label={button.tooltip}>
-            <Button
-              onClick={button.action}
-              disabled={button.disabled}
-              colorScheme={color}
-              size={'lg'}
-            >
-              {button.icon}
-            </Button>
-          </Tooltip>
-        ))}
+        <SimpleGrid columns={[4, 8]}>
+          {buttons.map((button) => (
+            <Tooltip key={button.key} label={button.tooltip}>
+              <Button
+                onClick={button.action}
+                disabled={button.disabled}
+                colorScheme={color}
+                size={'lg'}
+              >
+                {button.icon}
+              </Button>
+            </Tooltip>
+          ))}
+        </SimpleGrid>
       </ButtonGroup>
     </Box>
   );
