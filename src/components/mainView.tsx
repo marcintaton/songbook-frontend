@@ -5,7 +5,6 @@ import ITag from '@src/types/models/iTag';
 import { getSongsMetadata } from '@src/services/songsService';
 import { getTags } from '@src/services/tagsService';
 import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
-import ViewRoot from '@src/components/viewRoot';
 import HeadingMain from '@src/components/headingMain';
 import SearchBox from '@src/components/searchBox';
 import TagSelector from '@src/components/tagSelector';
@@ -41,32 +40,30 @@ export default function MainView() {
 
   return (
     <>
-      <ViewRoot maxWidth="40em">
-        <VStack p={'2em'}>
-          <HeadingMain
-            size="lg"
-            title={'Śpiewnik'}
-            subTitle={'Oaza Dorosłych Knurów'}
-          />
-          <SearchBox
-            onInputChange={(v) => setSearchTerm(v)}
-            value={searchTerm}
-            placeholder={'Szukaj piosenek...'}
-            foundItemsCount={searchFilteredSongs.length}
-          />
-          <TagSelector
-            title="Filtruj..."
-            tags={tags}
-            selectedTags={selectedTags}
-            setSelected={(_tags: ITag[]) => {
-              setSelectedTags(_tags);
-            }}
-            shouldWarn={selectedTags.length !== tags.length}
-            warnText={'Filtry aktywne!'}
-          />
-          <SongList splitSongs={splitSongs} />
-        </VStack>
-      </ViewRoot>
+      <VStack p={'2em'}>
+        <HeadingMain
+          size="lg"
+          title={'Śpiewnik'}
+          subTitle={'Oaza Dorosłych Knurów'}
+        />
+        <SearchBox
+          onInputChange={(v) => setSearchTerm(v)}
+          value={searchTerm}
+          placeholder={'Szukaj piosenek...'}
+          foundItemsCount={searchFilteredSongs.length}
+        />
+        <TagSelector
+          title="Filtruj..."
+          tags={tags}
+          selectedTags={selectedTags}
+          setSelected={(_tags: ITag[]) => {
+            setSelectedTags(_tags);
+          }}
+          shouldWarn={selectedTags.length !== tags.length}
+          warnText={'Filtry aktywne!'}
+        />
+        <SongList splitSongs={splitSongs} />
+      </VStack>
     </>
   );
 }
