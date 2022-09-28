@@ -26,6 +26,7 @@ export default function ButtonPanel(props: IProps) {
               onClick={button.action}
               disabled={button.disabled}
               colorScheme={color}
+              size={'lg'}
             >
               {button.icon}
             </Button>
