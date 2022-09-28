@@ -27,7 +27,7 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
         }
       });
 
-      const clearWord = word.replace(/\[[\w#]+]/gm, '');
+      const clearWord = word.replace(/\[[\w\S]+]/gm, '');
 
       return {
         word: clearWord,
