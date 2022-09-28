@@ -5,12 +5,9 @@ import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import {
   BsClipboardMinus,
   BsClipboardPlus,
-  BsFileEarmarkPdf,
   BsFilePdfFill,
-  BsFillFilePdfFill,
 } from 'react-icons/bs';
 import { BiCaretDown, BiCaretUp, BiFontFamily } from 'react-icons/bi';
-import { VscFilePdf } from 'react-icons/vsc';
 import Cookies from 'universal-cookie';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
@@ -133,7 +130,7 @@ export default function Song() {
         );
       },
       icon: <Icon as={BsFilePdfFill} />,
-      tooltip: 'Drukuj do PDF',
+      tooltip: 'Drukuj do PDF (WIP)',
       key: '6',
     },
     {
@@ -147,8 +144,8 @@ export default function Song() {
         <Icon as={BsClipboardMinus} />
       ),
       tooltip: !songSavedForPrint
-        ? 'Zapisz do kolejki wydruku'
-        : 'Usuń z kolejki wydruku',
+        ? 'Zapisz do kolejki wydruku (WIP)'
+        : 'Usuń z kolejki wydruku (WIP)',
       key: '7',
     },
   ];
