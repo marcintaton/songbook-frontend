@@ -9,6 +9,7 @@ import {
 } from 'react-icons/bs';
 import { BiCaretDown, BiCaretUp, BiFontFamily } from 'react-icons/bi';
 import Cookies from 'universal-cookie';
+import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import parseLyrics from '@src/utilities/lyricsParser';
@@ -18,8 +19,8 @@ import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
 import HeadingMain from '@src/components/headingMain';
 import Tags from '@src/components/tags';
 import ButtonPanel from '@src/components/buttonPanel';
-import generateAndSavePdf from '@src/utilities/songToPdf';
 import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
+import SingleSongPrint from './singleSongPrint';
 
 export default function Song() {
   const { id } = useParams();
@@ -75,6 +76,10 @@ export default function Song() {
     }
   }
 
+  function savePdf() {
+    (document.getElementsByClassName('pdfLink')[0] as HTMLElement).click();
+  }
+
   const mainPanelButtonsConfig = [
     {
       action: () => setIsMonoFontType(!isMonoFontType),
@@ -120,13 +125,7 @@ export default function Song() {
     },
     {
       action: () => {
-        generateAndSavePdf(
-          song!,
-          lyrics,
-          areChordsVisible,
-          isMonoFontType,
-          transShift
-        );
+        savePdf();
       },
       icon: <Icon as={BsFilePdfFill} />,
       tooltip: 'Drukuj do PDF (WIP)',
@@ -151,6 +150,11 @@ export default function Song() {
 
   return (
     <>
+      <PDFDownloadLink
+        className="pdfLink"
+        document={<SingleSongPrint />}
+        fileName="song.pdf"
+      ></PDFDownloadLink>
       {song && (
         <VStack p={'2em'}>
           <HeadingMain size="lg" title={song?.title} />
