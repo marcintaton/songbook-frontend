@@ -38,7 +38,7 @@ export default function TagSelector(props: IProps) {
           </h2>
           <AccordionPanel pb={4}>
             <Tag
-              colorScheme={!areAllSelected ? 'purple' : 'blue'}
+              backgroundColor={!areAllSelected ? 'purple.200' : 'blue.500'}
               variant={!areAllSelected ? 'subtle' : 'solid'}
               m={'0.1em'}
               onClick={() => {
@@ -52,7 +52,7 @@ export default function TagSelector(props: IProps) {
               const isSelected = selectedTags.includes(tag);
               return (
                 <Tag
-                  colorScheme={isSelected ? 'blue' : 'purple'}
+                  backgroundColor={isSelected ? 'blue.500' : 'purple.200'}
                   variant={isSelected ? 'solid' : 'subtle'}
                   key={tag._id}
                   m={'0.1em'}
