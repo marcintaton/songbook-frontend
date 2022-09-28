@@ -1,6 +1,6 @@
-import { ArrowBackIcon } from '@chakra-ui/icons';
-import { Flex, Spacer, Stack, Button } from '@chakra-ui/react';
-import { BsBack, BsMusicNote } from 'react-icons/bs';
+import { Flex, Spacer, Stack, Button, Icon } from '@chakra-ui/react';
+import { BiArrowBack } from 'react-icons/bi';
+import { BsMusicNote } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function TopBar() {
@@ -9,14 +9,18 @@ export default function TopBar() {
 
   return (
     <Flex padding={'0.5em'}>
-      <Button
-        colorScheme="purple"
-        variant="ghost"
-        size={'sm'}
-        onClick={() => navigate('/')}
-      >
-        <ArrowBackIcon />
-      </Button>
+      <Stack direction="row" spacing={4}>
+        {location.pathname !== '/' && (
+          <Button
+            colorScheme="purple"
+            variant="ghost"
+            size={'sm'}
+            onClick={() => navigate('/')}
+          >
+            <Icon as={BiArrowBack} />
+          </Button>
+        )}
+      </Stack>
       <Spacer />
       <Stack direction="row" spacing={4}>
         {location.pathname === '/' && (
