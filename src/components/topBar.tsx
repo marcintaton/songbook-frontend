@@ -1,5 +1,5 @@
 import { Flex, Spacer, Stack, Button } from '@chakra-ui/react';
-import { BsMusicNote, BsPrinter } from 'react-icons/bs';
+import { BsMusicNote } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function TopBar() {
@@ -20,14 +20,6 @@ export default function TopBar() {
             >
               Nowa
             </Button>
-
-            {/* <Button
-              leftIcon={<BsPrinter />}
-              colorScheme="purple"
-              variant="outline"
-            >
-              Druk
-            </Button> */}
           </>
         )}
       </Stack>

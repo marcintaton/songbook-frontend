@@ -161,7 +161,7 @@ export default function NewSongView() {
             <Button
               alignSelf={'left'}
               isLoading={submitting}
-              loadingText="Submitting"
+              loadingText="Przesyłanie"
               colorScheme="blue"
               variant="solid"
               onClick={onSubmit}
