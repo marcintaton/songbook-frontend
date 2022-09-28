@@ -21,13 +21,13 @@ export default function TopBar() {
               Nowa
             </Button>
 
-            <Button
+            {/* <Button
               leftIcon={<BsPrinter />}
               colorScheme="purple"
               variant="outline"
             >
               Druk
-            </Button>
+            </Button> */}
           </>
         )}
       </Stack>
