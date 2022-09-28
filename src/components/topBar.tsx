@@ -1,5 +1,5 @@
-import { Flex, Spacer, Stack, Button, Icon } from '@chakra-ui/react';
-import { BiArrowBack } from 'react-icons/bi';
+import { Flex, Spacer, Stack, Button } from '@chakra-ui/react';
+import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
 import { BsMusicNote } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -12,12 +12,13 @@ export default function TopBar() {
       <Stack direction="row" spacing={4}>
         {location.pathname !== '/' && (
           <Button
+            leftIcon={<MdOutlineKeyboardArrowLeft />}
             colorScheme="purple"
             variant="ghost"
             size={'md'}
             onClick={() => navigate('/')}
           >
-            <Icon as={BiArrowBack} />
+            Powrót
           </Button>
         )}
       </Stack>
