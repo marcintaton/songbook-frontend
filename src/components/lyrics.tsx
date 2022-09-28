@@ -5,17 +5,19 @@ import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 interface IProps {
   lyrics: ILyricsLine[];
   size: string;
+  areChordsVisible: boolean;
+  fontType: 'regular' | 'monospace';
 }
 
 export default function Lyrics(props: IProps) {
-  const { lyrics, size } = props;
+  const { lyrics, size, areChordsVisible, fontType } = props;
 
   return (
     <>
       <Box
         sx={{
           whiteSpace: 'pre-wrap',
-          fontFamily: 'monospace',
+          fontFamily: fontType,
           fontSize: size,
         }}
       >
@@ -27,7 +29,7 @@ export default function Lyrics(props: IProps) {
               {line.lineWords.map((word) => {
                 return (
                   <Stack key={nanoid()} marginTop={'1em'}>
-                    {areChordsPresent && (
+                    {areChordsPresent && areChordsVisible && (
                       <Flex
                         sx={{
                           fontWeight: 'bold',
