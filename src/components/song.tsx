@@ -163,7 +163,7 @@ export default function Song() {
           <ButtonPanel
             buttons={mainPanelButtonsConfig}
             color={'purple'}
-            variant={'solid'}
+            variant={'ghost'}
             size={'md'}
             isAttached={true}
           />

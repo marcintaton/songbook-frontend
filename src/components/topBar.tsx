@@ -1,4 +1,5 @@
-import { Flex, Spacer, Stack, Button } from '@chakra-ui/react';
+import { Flex, Spacer, Stack, Button, Icon } from '@chakra-ui/react';
+import { BiArrowBack } from 'react-icons/bi';
 import { BsMusicNote } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -7,7 +8,19 @@ export default function TopBar() {
   const location = useLocation();
 
   return (
-    <Flex padding={'1em'}>
+    <Flex padding={'0.5em'}>
+      <Stack direction="row" spacing={4}>
+        {location.pathname !== '/' && (
+          <Button
+            colorScheme="purple"
+            variant="ghost"
+            size={'sm'}
+            onClick={() => navigate('/')}
+          >
+            <Icon as={BiArrowBack} />
+          </Button>
+        )}
+      </Stack>
       <Spacer />
       <Stack direction="row" spacing={4}>
         {location.pathname === '/' && (
@@ -15,7 +28,8 @@ export default function TopBar() {
             <Button
               leftIcon={<BsMusicNote />}
               colorScheme="purple"
-              variant="outline"
+              variant="ghost"
+              size={'sm'}
               onClick={() => navigate('/new')}
             >
               Nowa

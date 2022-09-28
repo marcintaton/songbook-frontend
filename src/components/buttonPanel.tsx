@@ -9,7 +9,7 @@ interface IProps {
     disabled?: boolean;
   }[];
   color: string;
-  variant: 'outlined' | 'solid' | 'subtle';
+  variant: 'outline' | 'solid' | 'subtle' | 'ghost';
   size: string;
   isAttached: boolean;
 }
@@ -23,7 +23,6 @@ export default function ButtonPanel(props: IProps) {
         {buttons.map((button) => (
           <Tooltip key={button.key} label={button.tooltip}>
             <Button
-              border={'10px'}
               onClick={button.action}
               disabled={button.disabled}
               colorScheme={color}
