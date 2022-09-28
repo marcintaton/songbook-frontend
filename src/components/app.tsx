@@ -15,7 +15,7 @@ export default function App() {
           <BrowserRouter>
             <ErrorBoundary FallbackComponent={RenderError}>
               <TopBar />
-              <ViewRoot maxWidth="40em">
+              <ViewRoot maxWidth="50em">
                 <AppRoutes />
               </ViewRoot>
             </ErrorBoundary>

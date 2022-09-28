@@ -24,7 +24,7 @@ export default function TagSelector(props: IProps) {
   const areAllSelected = tags.length === selectedTags.length;
 
   return (
-    <Accordion allowToggle width={'100%'} maxWidth={'41em'}>
+    <Accordion allowToggle width={'100%'}>
       <AccordionItem>
         <>
           <h2>
