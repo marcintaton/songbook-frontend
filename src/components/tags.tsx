@@ -10,10 +10,9 @@ export default function Tags(props: IProps) {
     <Box pt={'1em'}>
       {tags.map((tag) => (
         <Tag
-          backgroundColor={'blue'}
+          backgroundColor={'blue.500'}
           m={'0.1em'}
           key={tag}
-          colorScheme={'blue'}
           variant={'solid'}
         >
           {tag}

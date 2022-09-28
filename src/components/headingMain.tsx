@@ -17,6 +17,7 @@ export default function HeadingMain(props: IProps) {
     <>
       <Heading
         pb={'0.4em'}
+        pt={'0.35em'}
         as="h1"
         size={titleSize}
         bgGradient={'linear(to-r, blue.500, purple.500)'}
