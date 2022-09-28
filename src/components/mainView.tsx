@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { VStack } from '@chakra-ui/react';
-import Cookies from 'universal-cookie';
 import ISongMetadata from '@src/types/models/iSongMetadata';
 import ITag from '@src/types/models/iTag';
 import { getSongsMetadata } from '@src/services/songsService';
@@ -56,11 +55,14 @@ export default function MainView() {
             foundItemsCount={searchFilteredSongs.length}
           />
           <TagSelector
+            title="Filtruj..."
             tags={tags}
             selectedTags={selectedTags}
             setSelected={(_tags: ITag[]) => {
               setSelectedTags(_tags);
             }}
+            shouldWarn={selectedTags.length !== tags.length}
+            warnText={'Filtry aktywne!'}
           />
           <SongList splitSongs={splitSongs} />
         </VStack>
