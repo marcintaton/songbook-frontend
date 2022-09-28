@@ -14,7 +14,7 @@ export default function TopBar() {
           <Button
             colorScheme="purple"
             variant="ghost"
-            size={'sm'}
+            size={'md'}
             onClick={() => navigate('/')}
           >
             <Icon as={BiArrowBack} />
@@ -29,7 +29,7 @@ export default function TopBar() {
               leftIcon={<BsMusicNote />}
               colorScheme="purple"
               variant="ghost"
-              size={'sm'}
+              size={'md'}
               onClick={() => navigate('/new')}
             >
               Nowa
