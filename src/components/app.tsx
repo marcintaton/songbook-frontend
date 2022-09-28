@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 import AppRoutes from '@src/components/appRoutes';
 import RenderError from '@src/components/renderError';
+import TopBar from './topBar';
+import ViewRoot from './viewRoot';
 
 export default function App() {
   return (
@@ -12,7 +14,10 @@ export default function App() {
         <ChakraProvider>
           <BrowserRouter>
             <ErrorBoundary FallbackComponent={RenderError}>
-              <AppRoutes />
+              <TopBar />
+              <ViewRoot maxWidth="40em">
+                <AppRoutes />
+              </ViewRoot>
             </ErrorBoundary>
           </BrowserRouter>
         </ChakraProvider>

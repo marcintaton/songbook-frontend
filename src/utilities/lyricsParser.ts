@@ -37,8 +37,6 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
 
     words[words.length - 1].word += '\n';
 
-    console.log(words);
-
     lyrics.push({
       lineWords: words,
       textLine: `${clearLine}`,

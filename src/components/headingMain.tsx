@@ -16,7 +16,6 @@ export default function HeadingMain(props: IProps) {
   return (
     <>
       <Heading
-        pt={'0.4em'}
         pb={'0.4em'}
         as="h1"
         size={titleSize}

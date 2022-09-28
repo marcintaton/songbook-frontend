@@ -12,3 +12,7 @@ export function getSongsMetadata() {
 export function getSong(id: string) {
   return apiService.get(`${config.api}/songs/${id}`);
 }
+
+export function addNewSong(payload: unknown) {
+  return apiService.post(`${config.api}/songs`, payload);
+}
