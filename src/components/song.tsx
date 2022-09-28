@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Box, Divider, Icon, VStack } from '@chakra-ui/react';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
+import { BsClipboardMinus, BsClipboardPlus } from 'react-icons/bs';
 import {
-  BiArchiveIn,
-  BiArchiveOut,
   BiCaretDown,
   BiCaretUp,
   BiFontFamily,
@@ -135,9 +134,9 @@ export default function Song() {
         setSongSavedForPrint(!songSavedForPrint);
       },
       icon: !songSavedForPrint ? (
-        <Icon as={BiArchiveIn} />
+        <Icon as={BsClipboardPlus} />
       ) : (
-        <Icon as={BiArchiveOut} />
+        <Icon as={BsClipboardMinus} />
       ),
       tooltip: !songSavedForPrint
         ? 'Zapisz do kolejki wydruku'
@@ -148,7 +147,7 @@ export default function Song() {
 
   return (
     <>
-      <ViewRoot maxWidth="40em">
+      <ViewRoot maxWidth="50em">
         {song && (
           <VStack p={'2em'}>
             <Box alignSelf={'left'}>

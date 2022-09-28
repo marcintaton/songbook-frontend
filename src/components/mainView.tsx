@@ -26,7 +26,10 @@ export default function MainView() {
     apiFetchDelegate<ISongMetadata[]>(getSongsMetadata, [setMetadata], []);
     apiFetchDelegate<ITag[]>(getTags, [setTags, setSelectedTags], []);
     const printCart: IPrintCartItem[] = cookies.get('print-cart');
-    if (!printCart) cookies.set('print-cart', []);
+    if (!printCart)
+      cookies.set('print-cart', [], {
+        sameSite: 'strict',
+      });
   }, []);
 
   const songs = metadata;

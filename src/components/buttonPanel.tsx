@@ -19,18 +19,14 @@ export default function ButtonPanel(props: IProps) {
 
   return (
     <Box>
-      <ButtonGroup
-        isAttached={isAttached}
-        variant={variant}
-        size={size}
-        colorScheme={color}
-      >
+      <ButtonGroup isAttached={isAttached} variant={variant} size={size}>
         {buttons.map((button) => (
           <Tooltip key={button.key} label={button.tooltip}>
             <Button
               border={'10px'}
               onClick={button.action}
               disabled={button.disabled}
+              colorScheme={color}
             >
               {button.icon}
             </Button>
