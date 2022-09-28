@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Box, Divider, Icon, VStack } from '@chakra-ui/react';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
-import { BsClipboardMinus, BsClipboardPlus } from 'react-icons/bs';
 import {
-  BiCaretDown,
-  BiCaretUp,
-  BiFontFamily,
-  BiPrinter,
-} from 'react-icons/bi';
+  BsClipboardMinus,
+  BsClipboardPlus,
+  BsFileEarmarkPdf,
+  BsFilePdfFill,
+  BsFillFilePdfFill,
+} from 'react-icons/bs';
+import { BiCaretDown, BiCaretUp, BiFontFamily } from 'react-icons/bi';
+import { VscFilePdf } from 'react-icons/vsc';
 import Cookies from 'universal-cookie';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
@@ -39,7 +41,7 @@ export default function Song() {
     apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
 
     const printCart = cookies.get('print-cart');
-    if (!printCart) cookies.set('print-cart', []);
+    if (!printCart) cookies.set('print-cart', [], { path: '/' });
     if (printCart && printCart.find((x: any) => x.id === id)) {
       setSongSavedForPrint(true);
     }
@@ -54,20 +56,26 @@ export default function Song() {
 
   function saveSongForPrinting(shouldAdd: boolean) {
     const printCart: IPrintCartItem[] = cookies.get('print-cart');
-    if (!printCart) cookies.set('print-cart', []);
+    if (!printCart) cookies.set('print-cart', [], { path: '/' });
     const songPresentInCart = printCart.find((x: any) => x.id === id);
     if (shouldAdd && !songPresentInCart) {
-      cookies.set('print-cart', [
-        ...printCart,
-        {
-          id,
-          chords: areChordsVisible,
-          monoFont: isMonoFontType,
-          transShift,
-        },
-      ]);
+      cookies.set(
+        'print-cart',
+        [
+          ...printCart,
+          {
+            id,
+            chords: areChordsVisible,
+            monoFont: isMonoFontType,
+            transShift,
+          },
+        ],
+        { path: '/' }
+      );
     } else if (!shouldAdd && songPresentInCart) {
-      cookies.set('print-cart', [...printCart.filter((x) => x.id !== id)]);
+      cookies.set('print-cart', [...printCart.filter((x) => x.id !== id)], {
+        path: '/',
+      });
     }
   }
 
@@ -124,8 +132,8 @@ export default function Song() {
           transShift
         );
       },
-      icon: <Icon as={BiPrinter} />,
-      tooltip: 'Drukuj',
+      icon: <Icon as={BsFilePdfFill} />,
+      tooltip: 'Drukuj do PDF',
       key: '6',
     },
     {
@@ -165,7 +173,7 @@ export default function Song() {
               buttons={mainPanelButtonsConfig}
               color={'purple'}
               variant={'solid'}
-              size={'sm'}
+              size={'md'}
               isAttached={true}
             />
             <Divider orientation="horizontal" borderColor={'lightgrey'} />

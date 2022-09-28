@@ -16,8 +16,12 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
           const chord = section.slice(1, -1);
           const transposed = transpose(chord, _transposeShift);
           chordLine +=
-            transposed +
-            ' '.repeat(Math.max(caretPosition - chordLine.length, 1));
+            ' '.repeat(
+              Math.max(
+                caretPosition - chordLine.length,
+                chordLine.length === 0 ? 0 : 1
+              )
+            ) + transposed;
         } else {
           caretPosition += section.length;
         }
@@ -32,6 +36,8 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
     });
 
     words[words.length - 1].word += '\n';
+
+    console.log(words);
 
     lyrics.push({
       lineWords: words,

@@ -11,11 +11,8 @@ import HeadingMain from '@src/components/headingMain';
 import SearchBox from '@src/components/searchBox';
 import TagSelector from '@src/components/tagSelector';
 import SongList from '@src/components/songList';
-import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 
 export default function MainView() {
-  const cookies = new Cookies();
-
   const [metadata, setMetadata] = useState<ISongMetadata[]>([]);
   const [tags, setTags] = useState<ITag[]>([]);
 
@@ -25,11 +22,6 @@ export default function MainView() {
   useEffect(() => {
     apiFetchDelegate<ISongMetadata[]>(getSongsMetadata, [setMetadata], []);
     apiFetchDelegate<ITag[]>(getTags, [setTags, setSelectedTags], []);
-    const printCart: IPrintCartItem[] = cookies.get('print-cart');
-    if (!printCart)
-      cookies.set('print-cart', [], {
-        sameSite: 'strict',
-      });
   }, []);
 
   const songs = metadata;
