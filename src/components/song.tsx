@@ -9,7 +9,6 @@ import {
 } from 'react-icons/bs';
 import { BiCaretDown, BiCaretUp, BiFontFamily } from 'react-icons/bi';
 import Cookies from 'universal-cookie';
-import ReactPDF, { PDFDownloadLink } from '@react-pdf/renderer';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import parseLyrics from '@src/utilities/lyricsParser';
@@ -20,7 +19,7 @@ import HeadingMain from '@src/components/headingMain';
 import Tags from '@src/components/tags';
 import ButtonPanel from '@src/components/buttonPanel';
 import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
-import SingleSongPrint from './singleSongPrint';
+import SingleSongPrint from '../utilities/pdfPrintingSchemas/singleSongPrint';
 
 export default function Song() {
   const { id } = useParams();
@@ -77,7 +76,15 @@ export default function Song() {
   }
 
   function savePdf() {
-    (document.getElementsByClassName('pdfLink')[0] as HTMLElement).click();
+    if (!song) return;
+
+    SingleSongPrint({
+      title: song?.title,
+      lyrics,
+      size: fontSize,
+      areChordsVisible,
+      fontType: isMonoFontType ? 'monospace' : 'regular',
+    });
   }
 
   const mainPanelButtonsConfig = [
@@ -102,14 +109,14 @@ export default function Song() {
     {
       action: () => setTransShift(transShift + 1),
       icon: '♯',
-      tooltip: 'Transponuj w górę',
+      tooltip: `Transponuj w górę (${transShift})`,
       disabled: !areChordsVisible,
       key: '3',
     },
     {
       action: () => setTransShift(transShift - 1),
       icon: '♭',
-      tooltip: 'Transponuj w dół',
+      tooltip: `Transponuj w dół (${transShift})`,
       disabled: !areChordsVisible,
       key: '4',
     },
@@ -128,7 +135,7 @@ export default function Song() {
         savePdf();
       },
       icon: <Icon as={BsFilePdfFill} />,
-      tooltip: 'Drukuj do PDF (WIP)',
+      tooltip: 'Drukuj do PDF',
       key: '6',
     },
     {
@@ -150,11 +157,6 @@ export default function Song() {
 
   return (
     <>
-      <PDFDownloadLink
-        className="pdfLink"
-        document={<SingleSongPrint />}
-        fileName="song.pdf"
-      ></PDFDownloadLink>
       {song && (
         <VStack p={'2em'}>
           <HeadingMain size="lg" title={song?.title} />
