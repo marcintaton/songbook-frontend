@@ -10,13 +10,14 @@ export default function TopBar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { cartCookie } = useContext(appContext);
+  const context = useContext(appContext);
+  const cartCookie = context.cookies?.printCart;
 
   const [songsInCart, setSongsInCart] = useState<number>();
 
   useEffect(() => {
-    if (!cartCookie) setSongsInCart(0);
-    else setSongsInCart(cartCookie.length);
+    if (!cartCookie?.value) setSongsInCart(0);
+    else setSongsInCart(cartCookie.value.length);
   }, [cartCookie]);
 
   return (

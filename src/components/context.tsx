@@ -4,12 +4,16 @@ import { CookieSetOptions } from 'universal-cookie';
 import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 
 interface IContext {
-  cartCookie?: IPrintCartItem[];
-  setCartCookie?: (
-    name: 'print-cart',
-    value: any,
-    options?: CookieSetOptions | undefined
-  ) => void;
+  cookies?: {
+    printCart: {
+      value: IPrintCartItem[];
+      set: (
+        name: 'print-cart',
+        value: any,
+        options?: CookieSetOptions | undefined
+      ) => void;
+    };
+  };
 }
 
 export const appContext = createContext<IContext>({});
@@ -23,7 +27,14 @@ export default function Context(
 
   return (
     <appContext.Provider
-      value={{ cartCookie: cartCookie['print-cart'], setCartCookie }}
+      value={{
+        cookies: {
+          printCart: {
+            value: cartCookie['print-cart'],
+            set: setCartCookie,
+          },
+        },
+      }}
     >
       {props.children}
     </appContext.Provider>

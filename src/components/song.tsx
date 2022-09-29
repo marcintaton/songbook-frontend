@@ -19,7 +19,8 @@ import { appContext } from './context';
 
 export default function Song() {
   const { id } = useParams();
-  const { cartCookie, setCartCookie } = useContext(appContext);
+  const context = useContext(appContext);
+  const cartCookie = context.cookies?.printCart;
 
   const [song, setSong] = useState<ISong>();
   const [transShift, setTransShift] = useState<number>(0);
@@ -32,10 +33,10 @@ export default function Song() {
   useEffect(() => {
     apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
 
-    if (!cartCookie || !setCartCookie) return;
+    if (!cartCookie) return;
 
-    if (!cartCookie) setCartCookie('print-cart', [], { path: '/' });
-    if (cartCookie.find((x: any) => x.id === id)) {
+    if (!cartCookie.value) cartCookie.set('print-cart', [], { path: '/' });
+    if (cartCookie.value.find((x: any) => x.id === id)) {
       setSongSavedForPrint(true);
     }
   }, []);
@@ -48,15 +49,15 @@ export default function Song() {
   }, [transShift, song]);
 
   function saveSongForPrinting(shouldAdd: boolean) {
-    if (!cartCookie || !setCartCookie) return;
+    if (!cartCookie) return;
 
-    if (!cartCookie) setCartCookie('print-cart', [], { path: '/' });
-    const songPresentInCart = cartCookie.find((x: any) => x.id === id);
+    if (!cartCookie.value) cartCookie.set('print-cart', [], { path: '/' });
+    const songPresentInCart = cartCookie.value.find((x: any) => x.id === id);
     if (shouldAdd && !songPresentInCart) {
-      setCartCookie(
+      cartCookie.set(
         'print-cart',
         [
-          ...cartCookie,
+          ...cartCookie.value,
           {
             id,
             chords: areChordsVisible,
@@ -67,9 +68,13 @@ export default function Song() {
         { path: '/' }
       );
     } else if (!shouldAdd && songPresentInCart) {
-      setCartCookie('print-cart', [...cartCookie.filter((x) => x.id !== id)], {
-        path: '/',
-      });
+      cartCookie.set(
+        'print-cart',
+        [...cartCookie.value.filter((x) => x.id !== id)],
+        {
+          path: '/',
+        }
+      );
     }
   }
 
