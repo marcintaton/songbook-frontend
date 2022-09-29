@@ -8,9 +8,8 @@ export default function PrintView() {
   return (
     <>
       <div>
-        {cartCookie['print-cart'].map((song) => (
-          <Text key={song.id}>{song.id}</Text>
-        ))}
+        {cartCookie &&
+          cartCookie.map((song) => <Text key={song.id}>{song.id}</Text>)}
       </div>
     </>
   );

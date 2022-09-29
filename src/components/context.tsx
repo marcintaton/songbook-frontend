@@ -1,11 +1,10 @@
 import React, { createContext, PropsWithChildren } from 'react';
 import { useCookies } from 'react-cookie';
 import { CookieSetOptions } from 'universal-cookie';
+import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 
 interface IContext {
-  cartCookie?: {
-    [x: string]: any;
-  };
+  cartCookie?: IPrintCartItem[];
   setCartCookie?: (
     name: 'print-cart',
     value: any,
@@ -20,8 +19,12 @@ export default function Context(
 ): JSX.Element {
   const [cartCookie, setCartCookie] = useCookies<string>(['print-cart']);
 
+  console.log(cartCookie);
+
   return (
-    <appContext.Provider value={{ cartCookie, setCartCookie }}>
+    <appContext.Provider
+      value={{ cartCookie: cartCookie['print-cart'], setCartCookie }}
+    >
       {props.children}
     </appContext.Provider>
   );

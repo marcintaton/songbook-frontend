@@ -15,11 +15,9 @@ export default function TopBar() {
   const [songsInCart, setSongsInCart] = useState<number>();
 
   useEffect(() => {
-    if (!cartCookie['print-cart']) setSongsInCart(0);
-    else setSongsInCart(cartCookie['print-cart'].length);
+    if (!cartCookie) setSongsInCart(0);
+    else setSongsInCart(cartCookie.length);
   }, [cartCookie]);
-
-  console.log(songsInCart);
 
   return (
     <Flex padding={'0.5em'}>

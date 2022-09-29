@@ -4,7 +4,6 @@ import { Box, Divider, Icon, VStack } from '@chakra-ui/react';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import { BsFilePdfFill, BsPrinter, BsPrinterFill } from 'react-icons/bs';
 import { BiCaretDown, BiCaretUp, BiFontFamily } from 'react-icons/bi';
-import Cookies from 'universal-cookie';
 import Lyrics from '@src/components/lyrics';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import parseLyrics from '@src/utilities/lyricsParser';
@@ -14,14 +13,12 @@ import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
 import HeadingMain from '@src/components/headingMain';
 import Tags from '@src/components/tags';
 import ButtonPanel from '@src/components/buttonPanel';
-import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 import SingleSongPrint from '../utilities/pdfPrintingSchemas/singleSongPrint';
 import OptionalTextSection from './optionalTextSection';
 import { appContext } from './context';
 
 export default function Song() {
   const { id } = useParams();
-  const cookies = new Cookies();
   const { cartCookie, setCartCookie } = useContext(appContext);
 
   const [song, setSong] = useState<ISong>();
@@ -35,9 +32,10 @@ export default function Song() {
   useEffect(() => {
     apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
 
-    const printCart = cookies.get('print-cart');
-    if (!printCart) setCartCookie('print-cart', [], { path: '/' });
-    if (printCart && printCart.find((x: any) => x.id === id)) {
+    if (!cartCookie || !setCartCookie) return;
+
+    if (!cartCookie) setCartCookie('print-cart', [], { path: '/' });
+    if (cartCookie.find((x: any) => x.id === id)) {
       setSongSavedForPrint(true);
     }
   }, []);
@@ -50,14 +48,15 @@ export default function Song() {
   }, [transShift, song]);
 
   function saveSongForPrinting(shouldAdd: boolean) {
-    const printCart: IPrintCartItem[] = cookies.get('print-cart');
-    if (!printCart) setCartCookie('print-cart', [], { path: '/' });
-    const songPresentInCart = printCart.find((x: any) => x.id === id);
+    if (!cartCookie || !setCartCookie) return;
+
+    if (!cartCookie) setCartCookie('print-cart', [], { path: '/' });
+    const songPresentInCart = cartCookie.find((x: any) => x.id === id);
     if (shouldAdd && !songPresentInCart) {
       setCartCookie(
         'print-cart',
         [
-          ...printCart,
+          ...cartCookie,
           {
             id,
             chords: areChordsVisible,
@@ -68,7 +67,7 @@ export default function Song() {
         { path: '/' }
       );
     } else if (!shouldAdd && songPresentInCart) {
-      setCartCookie('print-cart', [...printCart.filter((x) => x.id !== id)], {
+      setCartCookie('print-cart', [...cartCookie.filter((x) => x.id !== id)], {
         path: '/',
       });
     }
