@@ -1,12 +1,25 @@
-import { Flex, Spacer, Stack, Button } from '@chakra-ui/react';
+import { Flex, Spacer, Stack, Button, Tag } from '@chakra-ui/react';
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
-import { BsMusicNote } from 'react-icons/bs';
+import { BsMusicNote, BsPrinter } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { appContext } from './context';
 
 export default function TopBar() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { cartCookie } = useContext(appContext);
+
+  const [songsInCart, setSongsInCart] = useState<number>();
+
+  useEffect(() => {
+    if (!cartCookie['print-cart']) setSongsInCart(0);
+    else setSongsInCart(cartCookie['print-cart'].length);
+  }, [cartCookie]);
+
+  console.log(songsInCart);
 
   return (
     <Flex padding={'0.5em'}>
@@ -25,6 +38,27 @@ export default function TopBar() {
       </Stack>
       <Spacer />
       <Stack direction="row" spacing={4}>
+        {!location.pathname.includes('/print') &&
+          !location.pathname.includes('/new') && (
+            <Button
+              leftIcon={<BsPrinter />}
+              rightIcon={
+                songsInCart !== 0 ? (
+                  <Tag variant="solid" colorScheme="purple">
+                    {songsInCart}
+                  </Tag>
+                ) : (
+                  <></>
+                )
+              }
+              colorScheme="purple"
+              variant="ghost"
+              size={'md'}
+              onClick={() => navigate('/print')}
+            >
+              Drukuj
+            </Button>
+          )}
         {location.pathname === '/' && (
           <>
             <Button

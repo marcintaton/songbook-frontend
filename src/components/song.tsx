@@ -1,12 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Divider, Icon, VStack } from '@chakra-ui/react';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
-import {
-  BsClipboardMinus,
-  BsClipboardPlus,
-  BsFilePdfFill,
-} from 'react-icons/bs';
+import { BsFilePdfFill, BsPrinter, BsPrinterFill } from 'react-icons/bs';
 import { BiCaretDown, BiCaretUp, BiFontFamily } from 'react-icons/bi';
 import Cookies from 'universal-cookie';
 import Lyrics from '@src/components/lyrics';
@@ -21,10 +17,12 @@ import ButtonPanel from '@src/components/buttonPanel';
 import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 import SingleSongPrint from '../utilities/pdfPrintingSchemas/singleSongPrint';
 import OptionalTextSection from './optionalTextSection';
+import { appContext } from './context';
 
 export default function Song() {
   const { id } = useParams();
   const cookies = new Cookies();
+  const { cartCookie, setCartCookie } = useContext(appContext);
 
   const [song, setSong] = useState<ISong>();
   const [transShift, setTransShift] = useState<number>(0);
@@ -38,7 +36,7 @@ export default function Song() {
     apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
 
     const printCart = cookies.get('print-cart');
-    if (!printCart) cookies.set('print-cart', [], { path: '/' });
+    if (!printCart) setCartCookie('print-cart', [], { path: '/' });
     if (printCart && printCart.find((x: any) => x.id === id)) {
       setSongSavedForPrint(true);
     }
@@ -53,10 +51,10 @@ export default function Song() {
 
   function saveSongForPrinting(shouldAdd: boolean) {
     const printCart: IPrintCartItem[] = cookies.get('print-cart');
-    if (!printCart) cookies.set('print-cart', [], { path: '/' });
+    if (!printCart) setCartCookie('print-cart', [], { path: '/' });
     const songPresentInCart = printCart.find((x: any) => x.id === id);
     if (shouldAdd && !songPresentInCart) {
-      cookies.set(
+      setCartCookie(
         'print-cart',
         [
           ...printCart,
@@ -70,7 +68,7 @@ export default function Song() {
         { path: '/' }
       );
     } else if (!shouldAdd && songPresentInCart) {
-      cookies.set('print-cart', [...printCart.filter((x) => x.id !== id)], {
+      setCartCookie('print-cart', [...printCart.filter((x) => x.id !== id)], {
         path: '/',
       });
     }
@@ -145,9 +143,9 @@ export default function Song() {
         setSongSavedForPrint(!songSavedForPrint);
       },
       icon: !songSavedForPrint ? (
-        <Icon as={BsClipboardPlus} />
+        <Icon as={BsPrinter} />
       ) : (
-        <Icon as={BsClipboardMinus} />
+        <Icon as={BsPrinterFill} />
       ),
       tooltip: !songSavedForPrint
         ? 'Zapisz do kolejki wydruku (WIP)'
