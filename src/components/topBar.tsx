@@ -1,6 +1,7 @@
 import { Flex, Spacer, Stack, Button } from '@chakra-ui/react';
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
 import { BsMusicNote } from 'react-icons/bs';
+import { AiOutlineEdit } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function TopBar() {
@@ -40,7 +41,7 @@ export default function TopBar() {
         {location.pathname.includes('/song') && (
           <>
             <Button
-              leftIcon={<BsMusicNote />}
+              leftIcon={<AiOutlineEdit />}
               colorScheme="purple"
               variant="ghost"
               size={'md'}
