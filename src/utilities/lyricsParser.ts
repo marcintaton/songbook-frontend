@@ -6,28 +6,34 @@ export default function parseLyrics(_lyrics: string, _transposeShift: number) {
 
   _lyrics.split('\n').forEach((line) => {
     const clearLine = line.replace(/\[[\w#]+]/gm, '');
+    let potentialTouchState = false;
 
     const words = line.split(/(?<=\s)/g).map((word) => {
       let caretPosition = 0;
       let chordLine = '';
+      let clearWord = '';
 
       word.split(/(\[.*?\])/g).forEach((section) => {
         if (section.match(/\[.*?\]/)) {
           const chord = section.slice(1, -1);
           const transposed = transpose(chord, _transposeShift);
+          if (potentialTouchState && caretPosition === 0) {
+            clearWord += ' ';
+          }
+          const maxSpaceMod =
+            !(chordLine.length === 0) || potentialTouchState ? 1 : 0;
           chordLine +=
             ' '.repeat(
-              Math.max(
-                caretPosition - chordLine.length,
-                chordLine.length === 0 ? 0 : 1
-              )
+              Math.max(caretPosition - chordLine.length, maxSpaceMod)
             ) + transposed;
         } else {
           caretPosition += section.length;
         }
       });
 
-      const clearWord = word.replace(/\[[\w#|]+]/gm, '');
+      clearWord += word.replace(/\[[\w#|]+]/gm, '');
+
+      potentialTouchState = clearWord.length <= chordLine.length;
 
       return {
         word: clearWord,
