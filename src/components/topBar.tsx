@@ -31,14 +31,15 @@ export default function TopBar() {
             size={'md'}
             onClick={() => navigate('/')}
           >
-            Powrót
+            Śpiewnik
           </Button>
         )}
       </Stack>
       <Spacer />
       <Stack direction="row" spacing={4}>
         {!location.pathname.includes('/print') &&
-          !location.pathname.includes('/new') && (
+          !location.pathname.includes('/new') &&
+          !location.pathname.includes('/edit') && (
             <Button
               leftIcon={<BsPrinter />}
               rightIcon={
@@ -71,24 +72,22 @@ export default function TopBar() {
             </Button>
           </>
         )}
-        {location.pathname.includes('/song') && (
-          <>
-            <Button
-              leftIcon={<AiOutlineEdit />}
-              colorScheme="purple"
-              variant="ghost"
-              size={'md'}
-              disabled
-              onClick={
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                () => {}
-                // navigate(`/edit/${location.pathname.split('/').at(-1)}`)
-              }
-            >
-              Edytuj
-            </Button>
-          </>
-        )}
+        {location.pathname.includes('/song') &&
+          !location.pathname.includes('/edit') && (
+            <>
+              <Button
+                leftIcon={<AiOutlineEdit />}
+                colorScheme="purple"
+                variant="ghost"
+                size={'md'}
+                onClick={() => {
+                  navigate(`/song/${location.pathname.split('/').at(-1)}/edit`);
+                }}
+              >
+                Edytuj
+              </Button>
+            </>
+          )}
       </Stack>
     </Flex>
   );
