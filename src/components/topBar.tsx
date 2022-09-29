@@ -37,6 +37,24 @@ export default function TopBar() {
             </Button>
           </>
         )}
+        {location.pathname.includes('/song') && (
+          <>
+            <Button
+              leftIcon={<BsMusicNote />}
+              colorScheme="purple"
+              variant="ghost"
+              size={'md'}
+              disabled
+              onClick={
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                () => {}
+                // navigate(`/edit/${location.pathname.split('/').at(-1)}`)
+              }
+            >
+              Edytuj
+            </Button>
+          </>
+        )}
       </Stack>
     </Flex>
   );
