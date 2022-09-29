@@ -20,6 +20,7 @@ import Tags from '@src/components/tags';
 import ButtonPanel from '@src/components/buttonPanel';
 import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 import SingleSongPrint from '../utilities/pdfPrintingSchemas/singleSongPrint';
+import OptionalTextSection from './optionalTextSection';
 
 export default function Song() {
   const { id } = useParams();
@@ -174,14 +175,23 @@ export default function Song() {
             isAttached={true}
           />
           <Divider orientation="horizontal" borderColor={'lightgrey'} />
-
-          <Box pt={'3em'}>
+          <Box pt={'2em'} width={'100%'}>
+            <OptionalTextSection
+              title={'Notatki'}
+              value={song.notes}
+              newLineTitle
+            />
+          </Box>
+          <Box pt={'2em'} width={'100%'}>
             <Lyrics
               lyrics={lyrics}
               size={`${fontSize}em`}
               areChordsVisible={areChordsVisible}
               fontType={isMonoFontType ? 'monospace' : 'regular'}
             />
+          </Box>
+          <Box pt={'2em'} width={'100%'}>
+            <OptionalTextSection title={'Źródło:'} value={song.credits} />
           </Box>
         </VStack>
       )}

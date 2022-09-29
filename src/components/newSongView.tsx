@@ -10,6 +10,7 @@ import {
   Input,
   Textarea,
   VStack,
+  Text,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { getTags } from '@src/services/tagsService';
@@ -22,6 +23,8 @@ import { addNewSong } from '@src/services/songsService';
 export default function NewSongView() {
   const [title, setTitle] = useState<string>('');
   const [lyrics, setLyrics] = useState<string>('');
+  const [notes, setNotes] = useState<string>('');
+  const [credits, setCredits] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<ITag[]>([]);
 
@@ -48,6 +51,8 @@ export default function NewSongView() {
       lyrics,
       tags: selectedTags.map((x) => x._id),
       password,
+      notes,
+      credits,
     });
     setSubmitting(false);
 
@@ -58,14 +63,16 @@ export default function NewSongView() {
     } else if (response.status === 500) {
       setGeneralError(true);
     } else if (response.status === 200) {
-      // success
       setSubmitSuccess(true);
+      setPassword('');
     }
   }
 
   function clearState() {
     setTitle('');
     setLyrics('');
+    setNotes('');
+    setCredits('');
     setSelectedTags([]);
     setPassword('');
     setSubmitting(false);
@@ -93,7 +100,7 @@ export default function NewSongView() {
           </Flex>
         )}
         {submitSuccess && (
-          <Flex>
+          <Flex width={'100%'}>
             <Alert status="success" whiteSpace={'pre-wrap'}>
               <AlertIcon />
               {'Piosenka została przesłana. Kliknij '}
@@ -110,15 +117,17 @@ export default function NewSongView() {
         )}
         <VStack pt={'2em'} width={'100%'}>
           <FormControl isInvalid={dataError}>
-            <FormLabel>Tytuł</FormLabel>
+            <FormLabel>Tytuł *</FormLabel>
             <FormErrorMessage>Sprawdź czy dodałeś tytuł!</FormErrorMessage>
             <Input
               type="text"
               value={title}
+              placeholder={'Dodaj Tytuł'}
               onChange={(e) => setTitle(e.target.value)}
             />
           </FormControl>
           <FormControl isInvalid={dataError}>
+            <FormLabel>Tagi *</FormLabel>
             <FormErrorMessage>Sprawdź czy dodałeś tagi!</FormErrorMessage>
             <Flex
               width={'100%'}
@@ -139,7 +148,7 @@ export default function NewSongView() {
             </Flex>
           </FormControl>
           <FormControl isInvalid={dataError}>
-            <FormLabel>Tekst piosenki</FormLabel>
+            <FormLabel>Tekst piosenki *</FormLabel>
             <FormErrorMessage>Sprawdź czy dodałeś tekst!</FormErrorMessage>
             <Textarea
               value={lyrics}
@@ -148,8 +157,26 @@ export default function NewSongView() {
               onChange={(e) => setLyrics(e.target.value)}
             />
           </FormControl>
+          <FormControl>
+            <FormLabel>Notatki</FormLabel>
+            <Textarea
+              value={notes}
+              height={'3em'}
+              placeholder={'Dodaj notatki...'}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Źródła</FormLabel>
+            <Input
+              type="text"
+              value={credits}
+              placeholder={'Dodaj źródło piosenki lub / i opracowania...'}
+              onChange={(e) => setCredits(e.target.value)}
+            />
+          </FormControl>
           <FormControl isInvalid={authError}>
-            <FormLabel>Hasło</FormLabel>
+            <FormLabel>Hasło *</FormLabel>
             <FormErrorMessage>Hasło niepoprawne</FormErrorMessage>
             <Input
               type="password"
@@ -157,6 +184,9 @@ export default function NewSongView() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
+          <Flex width={'100%'} pt={'1em'}>
+            <Text>Pola ozanczone * są wymagane</Text>
+          </Flex>
           <Flex width={'100%'} pt={'1em'}>
             <Button
               alignSelf={'left'}

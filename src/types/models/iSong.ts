@@ -3,4 +3,6 @@ export default interface ISong {
   title: string;
   tags: string[];
   lyrics: string;
+  notes: string;
+  credits: string;
 }
