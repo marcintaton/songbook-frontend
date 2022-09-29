@@ -12,13 +12,15 @@ import { nanoid } from 'nanoid';
 import ILyricsLine from '@src/types/interfaces/iLyricsLine';
 import RobotoMono from '@root/assets/fonts/RobotoMono-Regular.ttf';
 import RobotoMonoBold from '@root/assets/fonts/RobotoMono-Bold.ttf';
+import Roboto from '@root/assets/fonts/Roboto-Regular.ttf';
+import RobotoBold from '@root/assets/fonts/Roboto-Bold.ttf';
 
 interface IProps {
   title: string;
   lyrics: ILyricsLine[];
   size: number;
   areChordsVisible: boolean;
-  fontType: string;
+  shouldPrintMonoFont: boolean;
 }
 
 Font.register({
@@ -33,11 +35,16 @@ Font.register({
   format: 'truetype',
 });
 
-const style = StyleSheet.create({
-  page: {
-    fontFamily: 'RobotoMono',
-    margin: '20px',
-  },
+Font.register({
+  family: 'Roboto',
+  src: Roboto,
+  format: 'truetype',
+});
+
+Font.register({
+  family: 'RobotoBold',
+  src: RobotoBold,
+  format: 'truetype',
 });
 
 const baseFontSize = 12;
@@ -47,9 +54,16 @@ export default async function SingleSongPrint(props: IProps) {
     title,
     lyrics,
     size: relativeFontSize,
-    // areChordsVisible,
-    // fontType,
+    areChordsVisible,
+    shouldPrintMonoFont,
   } = props;
+
+  const style = StyleSheet.create({
+    page: {
+      fontFamily: shouldPrintMonoFont ? 'RobotoMono' : 'Roboto',
+      margin: '20px',
+    },
+  });
 
   const blob = await pdf(
     <Document>
@@ -58,7 +72,7 @@ export default async function SingleSongPrint(props: IProps) {
           <Text
             style={{
               fontSize: `${baseFontSize * relativeFontSize}px`,
-              fontFamily: 'RobotoMonoBold',
+              fontFamily: shouldPrintMonoFont ? 'RobotoMonoBold' : 'RobotoBold',
               marginBottom: '20px',
             }}
           >
@@ -85,16 +99,20 @@ export default async function SingleSongPrint(props: IProps) {
                       }}
                       key={nanoid()}
                     >
-                      <Text
-                        style={{
-                          color: 'purple',
-                          fontFamily: 'RobotoMonoBold',
-                        }}
-                      >
-                        {word.chords
-                          .replaceAll(' ', '\t')
-                          .replaceAll('.', '\t')}
-                      </Text>
+                      {areChordsVisible && (
+                        <Text
+                          style={{
+                            color: 'purple',
+                            fontFamily: shouldPrintMonoFont
+                              ? 'RobotoMonoBold'
+                              : 'RobotoBold',
+                          }}
+                        >
+                          {word.chords
+                            .replaceAll(' ', '\u{2007}')
+                            .replaceAll('.', '\u{2007}')}
+                        </Text>
+                      )}
                       <Text>{word.word}</Text>
                     </View>
                   );

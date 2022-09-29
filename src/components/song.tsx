@@ -84,7 +84,7 @@ export default function Song() {
       lyrics,
       size: fontSize,
       areChordsVisible,
-      fontType: isMonoFontType ? 'monospace' : 'regular',
+      shouldPrintMonoFont: isMonoFontType,
     });
   }
 
@@ -175,13 +175,16 @@ export default function Song() {
             isAttached={true}
           />
           <Divider orientation="horizontal" borderColor={'lightgrey'} />
-          <Box pt={'2em'} width={'100%'}>
-            <OptionalTextSection
-              title={'Notatki'}
-              value={song.notes}
-              newLineTitle
-            />
-          </Box>
+          {song.notes && (
+            <Box pt={'2em'} width={'100%'}>
+              <OptionalTextSection
+                title={'Notatki'}
+                value={song.notes}
+                fontStyle={'italic'}
+                newLineTitle
+              />
+            </Box>
+          )}
           <Box pt={'2em'} width={'100%'}>
             <Lyrics
               lyrics={lyrics}
@@ -190,9 +193,16 @@ export default function Song() {
               fontType={isMonoFontType ? 'monospace' : 'regular'}
             />
           </Box>
-          <Box pt={'2em'} width={'100%'}>
-            <OptionalTextSection title={'Źródło:'} value={song.credits} />
-          </Box>
+          {song.credits && (
+            <Box pt={'2em'} width={'100%'}>
+              <OptionalTextSection
+                title={'Źródło:'}
+                value={song.credits}
+                fontStyle={'italic'}
+                textColor={'grey'}
+              />
+            </Box>
+          )}
         </VStack>
       )}
     </>
