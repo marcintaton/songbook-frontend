@@ -35,8 +35,7 @@ export default function Song() {
 
     if (!cartCookie) return;
 
-    if (!cartCookie.value) cartCookie.set('print-cart', [], { path: '/' });
-    else if (cartCookie.value.find((x: any) => x.id === id)) {
+    if (cartCookie.value.find((x: any) => x.id === id) && !songSavedForPrint) {
       setSongSavedForPrint(true);
     }
   }, []);
@@ -51,7 +50,6 @@ export default function Song() {
   function saveSongForPrinting(shouldAdd: boolean) {
     if (!cartCookie) return;
 
-    if (!cartCookie.value) cartCookie.set('print-cart', [], { path: '/' });
     const songPresentInCart = cartCookie.value.find((x: any) => x.id === id);
     if (shouldAdd && !songPresentInCart) {
       cartCookie.set(

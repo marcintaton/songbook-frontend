@@ -23,7 +23,9 @@ export default function Context(
 ): JSX.Element {
   const [cartCookie, setCartCookie] = useCookies<string>(['print-cart']);
 
-  console.log(cartCookie);
+  console.log(cartCookie.value);
+
+  if (!cartCookie) setCartCookie('print-cart', [], { path: '/' });
 
   return (
     <appContext.Provider
