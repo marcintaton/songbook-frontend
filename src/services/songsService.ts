@@ -16,3 +16,7 @@ export function getSong(id: string) {
 export function addNewSong(payload: unknown) {
   return apiService.post(`${config.api}/songs`, payload);
 }
+
+export function updateSong(id: string, payload: unknown) {
+  return apiService.put(`${config.api}/songs/${id}`, payload);
+}

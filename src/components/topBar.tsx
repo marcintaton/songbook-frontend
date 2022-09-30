@@ -1,6 +1,5 @@
 import { Flex, Spacer, Stack, Button, Tag } from '@chakra-ui/react';
-import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
-import { BsMusicNote, BsPrinter } from 'react-icons/bs';
+import { BsMusicNote, BsPlusLg, BsPrinter } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
@@ -25,7 +24,7 @@ export default function TopBar() {
       <Stack direction="row" spacing={4}>
         {location.pathname !== '/' && (
           <Button
-            leftIcon={<MdOutlineKeyboardArrowLeft />}
+            leftIcon={<BsMusicNote />}
             colorScheme="purple"
             variant="ghost"
             size={'md'}
@@ -62,7 +61,7 @@ export default function TopBar() {
         {location.pathname === '/' && (
           <>
             <Button
-              leftIcon={<BsMusicNote />}
+              leftIcon={<BsPlusLg />}
               colorScheme="purple"
               variant="ghost"
               size={'md'}

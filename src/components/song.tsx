@@ -36,7 +36,7 @@ export default function Song() {
     if (!cartCookie) return;
 
     if (!cartCookie.value) cartCookie.set('print-cart', [], { path: '/' });
-    if (cartCookie.value.find((x: any) => x.id === id)) {
+    else if (cartCookie.value.find((x: any) => x.id === id)) {
       setSongSavedForPrint(true);
     }
   }, []);

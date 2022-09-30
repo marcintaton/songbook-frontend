@@ -2,7 +2,6 @@ import {
   Alert,
   AlertIcon,
   Button,
-  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -11,29 +10,31 @@ import {
   Textarea,
   VStack,
   Text,
+  Container,
+  Box,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { getTags } from '@src/services/tagsService';
 import ITag from '@src/types/models/iTag';
 import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
-import HeadingMain from './headingMain';
 import TagSelector from './tagSelector';
-import { addNewSong } from '@src/services/songsService';
+import IFormSongData from '@src/types/interfaces/iFormSongData';
 
 interface IProps {
   variant: 'new' | 'edit';
-  initialData?: {
+  submitCallback: (payload: IFormSongData) => Promise<number>;
+  dataForEdit?: {
     title: string;
     lyrics: string;
     notes: string;
     credits: string;
-    tags: ITag[];
+    tags: string[];
+    customBackCallback: () => void;
   };
-  submitCallback: (payload: unknown) => void;
 }
 
 export default function SongForm(props: IProps) {
-  const { variant, initialData } = props;
+  const { variant, dataForEdit, submitCallback } = props;
 
   const [title, setTitle] = useState<string>('');
   const [lyrics, setLyrics] = useState<string>('');
@@ -51,14 +52,14 @@ export default function SongForm(props: IProps) {
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!initialData) return;
+    if (!dataForEdit || !dataForEdit.title) return;
 
-    setTitle(initialData.title);
-    setLyrics(initialData.lyrics);
-    setNotes(initialData.notes);
-    setCredits(initialData.credits);
-    setSelectedTags(initialData.tags);
-  }, [initialData]);
+    setTitle(dataForEdit.title);
+    setLyrics(dataForEdit.lyrics);
+    setNotes(dataForEdit.notes);
+    setCredits(dataForEdit.credits);
+    setSelectedTags(tags.filter((tag) => dataForEdit.tags.includes(tag.name)));
+  }, [dataForEdit]);
 
   useEffect(() => {
     apiFetchDelegate<ITag[]>(getTags, [setTags], []);
@@ -70,23 +71,23 @@ export default function SongForm(props: IProps) {
     setGeneralError(false);
     setDataError(false);
 
-    const response = await addNewSong({
+    const responseStatus = await submitCallback({
       title,
-      lyrics,
       tags: selectedTags.map((x) => x._id),
-      password,
+      lyrics,
       notes,
       credits,
+      password,
     });
     setSubmitting(false);
 
-    if (response.status === 400) {
+    if (responseStatus === 400) {
       setDataError(true);
-    } else if (response.status === 401) {
+    } else if (responseStatus === 401) {
       setAuthError(true);
-    } else if (response.status === 500) {
+    } else if (responseStatus === 500) {
       setGeneralError(true);
-    } else if (response.status === 200) {
+    } else if (responseStatus === 200) {
       setSubmitSuccess(true);
       setPassword('');
     }
@@ -106,15 +107,45 @@ export default function SongForm(props: IProps) {
     setSubmitSuccess(false);
   }
 
+  function getSuccessAlert(): JSX.Element {
+    const initialText =
+      variant === 'new'
+        ? 'Piosenka została przesłana.'
+        : 'Piosenka została zaktualizowana.';
+
+    const finalText =
+      variant === 'new' ? ' aby dodać kolejną.' : ' aby wrócić do piosenki.';
+
+    const linkAction =
+      variant === 'new'
+        ? () => clearState()
+        : () => {
+            clearState();
+            dataForEdit?.customBackCallback();
+          };
+
+    return (
+      <>
+        <Flex flexDirection={'row'}>
+          <Text>
+            {`${initialText} Kliknij `}
+            <Text
+              as={'button'}
+              textDecoration={'underline'}
+              onClick={linkAction}
+            >
+              {'tutaj'}
+            </Text>
+            {finalText}
+          </Text>
+        </Flex>
+      </>
+    );
+  }
+
   return (
     <>
       <VStack p={'2em'}>
-        <HeadingMain size="md" title={'Dodaj piosenkę'} />
-        <Divider
-          orientation="horizontal"
-          pt={'2em'}
-          borderColor={'lightgrey'}
-        />
         {generalError && (
           <Flex>
             <Alert status="error">
@@ -127,15 +158,7 @@ export default function SongForm(props: IProps) {
           <Flex width={'100%'}>
             <Alert status="success" whiteSpace={'pre-wrap'}>
               <AlertIcon />
-              {'Piosenka została przesłana. Kliknij '}
-              <Flex
-                as={'button'}
-                textDecoration={'underline'}
-                onClick={() => clearState()}
-              >
-                {'tutaj'}
-              </Flex>
-              {' aby dodać kolejną.'}
+              {getSuccessAlert()}
             </Alert>
           </Flex>
         )}
