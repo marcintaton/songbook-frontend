@@ -10,8 +10,6 @@ import {
   Textarea,
   VStack,
   Text,
-  Container,
-  Box,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { getTags } from '@src/services/tagsService';

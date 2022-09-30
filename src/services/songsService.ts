@@ -13,6 +13,10 @@ export function getSong(id: string) {
   return apiService.get(`${config.api}/songs/${id}`);
 }
 
+export function getSelectedSongs(ids: string[]) {
+  return apiService.post(`${config.api}/songs/selected`, ids);
+}
+
 export function addNewSong(payload: unknown) {
   return apiService.post(`${config.api}/songs`, payload);
 }
