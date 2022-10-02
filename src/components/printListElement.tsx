@@ -22,10 +22,11 @@ import IPrintListItem from '@src/types/interfaces/iPrintListItem';
 interface IProps {
   item: IPrintListItem;
   onChange: (payload: IPrintListItem) => void;
+  onReorder: (up: boolean, position: number) => void;
 }
 
 export default function PrintListElement(props: IProps) {
-  const { item, onChange } = props;
+  const { item, onChange, onReorder } = props;
 
   return (
     <Box
@@ -65,10 +66,9 @@ export default function PrintListElement(props: IProps) {
                 mt={'0.5em'}
                 fontSize={'1.5em'}
                 variant={'ghost'}
-                onClick={() => console.log('XD')}
+                onClick={() => onReorder(true, item.orderId)}
                 color={'purple'}
                 aria-label={''}
-                disabled
               >
                 <Icon as={BsFillArrowUpCircleFill} />
               </IconButton>
@@ -79,10 +79,9 @@ export default function PrintListElement(props: IProps) {
                 mb={'0.5em'}
                 fontSize={'1.5em'}
                 variant={'ghost'}
-                onClick={() => console.log('XD')}
+                onClick={() => onReorder(false, item.orderId)}
                 color={'purple'}
                 aria-label={''}
-                disabled
               >
                 <Icon as={BsFillArrowDownCircleFill} />
               </IconButton>

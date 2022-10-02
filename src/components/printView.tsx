@@ -52,16 +52,18 @@ export default function PrintView() {
     if (!songs) return;
 
     BatchSongPrint({
-      songs: songs.map((x) => {
-        const _lyrics = parseLyrics(x.song.lyrics, 0);
-        return {
-          title: x.song.title,
-          lyrics: _lyrics.lyrics,
-          areChordsVisible: x.areChordsVisible,
-          shouldPrintBlackAndWhite: x.shouldPrintBnW,
-          notes: '',
-        };
-      }),
+      songs: songs
+        .sort((a, b) => a.orderId - b.orderId)
+        .map((x) => {
+          const _lyrics = parseLyrics(x.song.lyrics, 0);
+          return {
+            title: x.song.title,
+            lyrics: _lyrics.lyrics,
+            areChordsVisible: x.areChordsVisible,
+            shouldPrintBlackAndWhite: x.shouldPrintBnW,
+            notes: '',
+          };
+        }),
     });
   }
 
@@ -71,6 +73,27 @@ export default function PrintView() {
       _payload,
     ]);
   }
+
+  function handleReorder(dirUp: boolean, currentPos: number) {
+    const currentIndex = songs.findIndex((x) => x.orderId === currentPos);
+
+    if (currentIndex === 0 && dirUp) return;
+    if (currentIndex === songs.length - 1 && !dirUp) return;
+
+    const currentSong = songs[currentIndex];
+    const songToSwap = songs[currentIndex + (dirUp ? -1 : 1)];
+
+    setSongs([
+      ...songs.filter(
+        (x) =>
+          x.song._id !== currentSong.song._id &&
+          x.song._id !== songToSwap.song._id
+      ),
+      { ...currentSong, orderId: songToSwap.orderId },
+      { ...songToSwap, orderId: currentSong.orderId },
+    ]);
+  }
+  console.log(songs);
 
   const _songs = songs.sort((a, b) => a.orderId - b.orderId);
 
@@ -106,6 +129,7 @@ export default function PrintView() {
                 key={item.song._id}
                 item={item}
                 onChange={onItemChange}
+                onReorder={handleReorder}
               />
             );
           })}
