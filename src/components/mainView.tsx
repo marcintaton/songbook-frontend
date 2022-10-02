@@ -18,8 +18,19 @@ export default function MainView() {
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
-    apiFetchDelegate<ISongMetadata[]>(getSongsMetadata, [setMetadata], []);
-    apiFetchDelegate<ITag[]>(getTags, [setTags, setSelectedTags], []);
+    apiFetchDelegate<ISongMetadata[]>(
+      getSongsMetadata,
+      (payload: ISongMetadata[]) => setMetadata(payload),
+      []
+    );
+    apiFetchDelegate<ITag[]>(
+      getTags,
+      (payload: ITag[]) => {
+        setTags(payload);
+        setSelectedTags(payload);
+      },
+      []
+    );
   }, []);
 
   const songs = metadata;

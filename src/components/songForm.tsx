@@ -60,7 +60,11 @@ export default function SongForm(props: IProps) {
   }, [dataForEdit]);
 
   useEffect(() => {
-    apiFetchDelegate<ITag[]>(getTags, [setTags], []);
+    apiFetchDelegate<ITag[]>(
+      getTags,
+      (payload: ITag[]) => setTags(payload),
+      []
+    );
   }, []);
 
   async function onSubmit() {

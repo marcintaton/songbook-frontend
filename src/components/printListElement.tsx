@@ -17,13 +17,15 @@ import {
   BsFillArrowDownCircleFill,
   BsFillArrowUpCircleFill,
 } from 'react-icons/bs';
+import IPrintListItem from '@src/types/interfaces/iPrintListItem';
 
 interface IProps {
-  title: string;
+  item: IPrintListItem;
+  onChange: (payload: IPrintListItem) => void;
 }
 
 export default function PrintListElement(props: IProps) {
-  const { title } = props;
+  const { item, onChange } = props;
 
   return (
     <Box
@@ -52,7 +54,7 @@ export default function PrintListElement(props: IProps) {
       >
         <GridItem p="2" backgroundColor={'white.300'} area={'header'}>
           <Text fontWeight={'bold'} fontSize={'1.5em'}>
-            {title}
+            {item.song.title}
           </Text>
         </GridItem>
         <GridItem p="2" backgroundColor={'white.300'} area={'nav'}>
@@ -90,10 +92,28 @@ export default function PrintListElement(props: IProps) {
         </GridItem>
         <GridItem backgroundColor={'white.300'} area={'controls'}>
           <Grid templateColumns={['1fr', '1fr', '1fr 1fr 2fr']}>
-            <Checkbox m={'1em'} defaultChecked disabled>
+            <Checkbox
+              m={'1em'}
+              isChecked={item.areChordsVisible}
+              onChange={() =>
+                onChange({
+                  ...item,
+                  areChordsVisible: !item.areChordsVisible,
+                })
+              }
+            >
               Pokaż chwyty
             </Checkbox>
-            <Checkbox m={'1em'} disabled>
+            <Checkbox
+              m={'1em'}
+              isChecked={item.shouldPrintBnW}
+              onChange={() =>
+                onChange({
+                  ...item,
+                  shouldPrintBnW: !item.shouldPrintBnW,
+                })
+              }
+            >
               Czarno biały
             </Checkbox>
             <HStack m={'1em'} maxW={'10em'}>

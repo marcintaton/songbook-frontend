@@ -31,7 +31,12 @@ export default function Song() {
   const [songSavedForPrint, setSongSavedForPrint] = useState<boolean>(false);
 
   useEffect(() => {
-    apiFetchDelegate<ISong | undefined>(getSong, [setSong], {} as ISong, [id]);
+    apiFetchDelegate<ISong | undefined>(
+      getSong,
+      (payload: ISong | undefined) => setSong(payload),
+      {} as ISong,
+      [id]
+    );
 
     if (!cartCookie) return;
 

@@ -9,41 +9,70 @@ import { getSelectedSongs } from '@src/services/songsService';
 import HeadingMain from './headingMain';
 import BatchSongPrint from '@src/utilities/pdfPrintingSchemas/batchSongPrint';
 import parseLyrics from '@src/utilities/lyricsParser';
+import IPrintListItem from '@src/types/interfaces/iPrintListItem';
 
 export default function PrintView() {
   const context = useContext(appContext);
   const cartCookie = context.cookies?.printCart;
 
-  const [songs, setSongs] = useState<ISong[]>([]);
+  const [songs, setSongs] = useState<IPrintListItem[]>([]);
 
   useEffect(() => {
     const ids = cartCookie?.value.map((x) => x.id);
 
-    apiFetchDelegate(getSelectedSongs, [setSongs], [] as ISong[], [ids]);
+    apiFetchDelegate(
+      getSelectedSongs,
+      (payload: ISong[]) => {
+        setSongs(
+          payload.map((song) => {
+            const cookieProps = cartCookie?.value.find(
+              (cartData) => cartData.id === song._id
+            );
+            return {
+              song,
+              areChordsVisible: cookieProps?.chords || false,
+              hasMonoFont: cookieProps?.monoFont || false,
+              transShift: cookieProps?.transShift || 0,
+              shouldPrintBnW: false,
+              orderId: payload.indexOf(song),
+            };
+          })
+        );
+      },
+      [] as ISong[],
+      [ids]
+    );
   }, [cartCookie?.value]);
 
   function removeAll() {
-    cartCookie?.set('print-cart', []);
+    cartCookie?.set([]);
   }
 
   function savePdf() {
     if (!songs) return;
 
-    console.log(songs);
-
     BatchSongPrint({
       songs: songs.map((x) => {
-        const _lyrics = parseLyrics(x.lyrics, 0);
+        const _lyrics = parseLyrics(x.song.lyrics, 0);
         return {
-          title: x.title,
+          title: x.song.title,
           lyrics: _lyrics.lyrics,
-          areChordsVisible: x._id !== '0',
-          shouldPrintBlackAndWhite: x._id === '0',
+          areChordsVisible: x.areChordsVisible,
+          shouldPrintBlackAndWhite: x.shouldPrintBnW,
           notes: '',
         };
       }),
     });
   }
+
+  function onItemChange(_payload: IPrintListItem) {
+    setSongs([
+      ...songs.filter((x) => x.song._id !== _payload.song._id),
+      _payload,
+    ]);
+  }
+
+  const _songs = songs.sort((a, b) => a.orderId - b.orderId);
 
   return (
     <>
@@ -69,10 +98,16 @@ export default function PrintView() {
           Usuń wszystkie
         </Button>
       </HStack>
-      {songs !== undefined && (
+      {_songs && (
         <VStack p={'2em'} spacing={'3em'}>
-          {songs.map((song) => {
-            return <PrintListElement key={song._id} title={song.title} />;
+          {_songs.map((item) => {
+            return (
+              <PrintListElement
+                key={item.song._id}
+                item={item}
+                onChange={onItemChange}
+              />
+            );
           })}
         </VStack>
       )}

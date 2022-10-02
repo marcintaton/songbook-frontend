@@ -14,7 +14,12 @@ export default function NewSongView() {
   const [song, setSong] = useState<ISong>({} as ISong);
 
   useEffect(() => {
-    apiFetchDelegate<ISong>(getSong, [setSong], {} as ISong, [id]);
+    apiFetchDelegate<ISong>(
+      getSong,
+      (payload: ISong) => setSong(payload),
+      {} as ISong,
+      [id]
+    );
   }, [id]);
 
   async function submitCallback(payload: IFormSongData) {
