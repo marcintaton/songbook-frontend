@@ -84,16 +84,18 @@ export default async function BatchSongPrint(props: IProps) {
                             }}
                             key={nanoid()}
                           >
-                            <Text
-                              style={{
-                                color: 'purple',
-                                fontFamily: 'RobotoMonoBold',
-                              }}
-                            >
-                              {word.chords
-                                .replaceAll(' ', '\u{2007}')
-                                .replaceAll('.', '\u{2007}')}
-                            </Text>
+                            {song.areChordsVisible && (
+                              <Text
+                                style={{
+                                  color: 'purple',
+                                  fontFamily: 'RobotoMonoBold',
+                                }}
+                              >
+                                {word.chords
+                                  .replaceAll(' ', '\u{2007}')
+                                  .replaceAll('.', '\u{2007}')}
+                              </Text>
+                            )}
                             <Text>{word.word}</Text>
                           </View>
                         );
@@ -101,6 +103,7 @@ export default async function BatchSongPrint(props: IProps) {
                     </View>
                   );
                 })}
+                <Text> </Text>
               </View>
             );
           })}
