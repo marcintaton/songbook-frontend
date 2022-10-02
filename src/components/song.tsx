@@ -52,27 +52,17 @@ export default function Song() {
 
     const songPresentInCart = cartCookie.value.find((x: any) => x.id === id);
     if (shouldAdd && !songPresentInCart) {
-      cartCookie.set(
-        'print-cart',
-        [
-          ...cartCookie.value,
-          {
-            id,
-            chords: areChordsVisible,
-            monoFont: isMonoFontType,
-            transShift,
-          },
-        ],
-        { path: '/' }
-      );
-    } else if (!shouldAdd && songPresentInCart) {
-      cartCookie.set(
-        'print-cart',
-        [...cartCookie.value.filter((x) => x.id !== id)],
+      cartCookie.set([
+        ...cartCookie.value,
         {
-          path: '/',
-        }
-      );
+          id,
+          chords: areChordsVisible,
+          monoFont: isMonoFontType,
+          transShift,
+        },
+      ]);
+    } else if (!shouldAdd && songPresentInCart) {
+      cartCookie.set([...cartCookie.value.filter((x) => x.id !== id)]);
     }
   }
 

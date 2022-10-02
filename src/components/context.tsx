@@ -1,17 +1,12 @@
 import React, { createContext, PropsWithChildren } from 'react';
 import { useCookies } from 'react-cookie';
-import { CookieSetOptions } from 'universal-cookie';
 import IPrintCartItem from '@src/types/interfaces/iPrintCartItem';
 
 interface IContext {
   cookies?: {
     printCart: {
       value: IPrintCartItem[];
-      set: (
-        name: 'print-cart',
-        value: any,
-        options?: CookieSetOptions | undefined
-      ) => void;
+      set: (value: any) => void;
     };
   };
 }
@@ -23,9 +18,7 @@ export default function Context(
 ): JSX.Element {
   const [cartCookie, setCartCookie] = useCookies<string>(['print-cart']);
 
-  console.log(cartCookie.value);
-
-  if (!cartCookie) setCartCookie('print-cart', [], { path: '/' });
+  if (!cartCookie['print-cart']) setCartCookie('print-cart', [], { path: '/' });
 
   return (
     <appContext.Provider
@@ -33,7 +26,11 @@ export default function Context(
         cookies: {
           printCart: {
             value: cartCookie['print-cart'],
-            set: setCartCookie,
+            set: (value: any) => {
+              setCartCookie('print-cart', value, {
+                path: '/',
+              });
+            },
           },
         },
       }}

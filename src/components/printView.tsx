@@ -69,7 +69,7 @@ export default function PrintView() {
           Usuń wszystkie
         </Button>
       </HStack>
-      {songs && (
+      {songs !== undefined && (
         <VStack p={'2em'} spacing={'3em'}>
           {songs.map((song) => {
             return <PrintListElement key={song._id} title={song.title} />;
