@@ -17,6 +17,7 @@ import ITag from '@src/types/models/iTag';
 import apiFetchDelegate from '@src/utilities/apiFetchDelegate';
 import TagSelector from './tagSelector';
 import IFormSongData from '@src/types/interfaces/iFormSongData';
+import { validateChords } from '@src/utilities/chords';
 
 interface IProps {
   variant: 'new' | 'edit';
@@ -47,6 +48,7 @@ export default function SongForm(props: IProps) {
   const [dataError, setDataError] = useState<boolean>(false);
   const [authError, setAuthError] = useState<boolean>(false);
   const [generalError, setGeneralError] = useState<boolean>(false);
+  const [chordsError, setChordsError] = useState<boolean>(false);
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
 
   useEffect(() => {
@@ -71,7 +73,23 @@ export default function SongForm(props: IProps) {
     setSubmitting(true);
     setAuthError(false);
     setGeneralError(false);
+    setChordsError(false);
     setDataError(false);
+
+    if (lyrics.length === 0 || tags.length === 0 || title.length === 0) {
+      setDataError(true);
+      setSubmitting(false);
+      return;
+    }
+
+    const chordsValid = validateChords(lyrics);
+    console.log(chordsValid);
+
+    if (!chordsValid) {
+      setChordsError(true);
+      setSubmitting(false);
+      return;
+    }
 
     const responseStatus = await submitCallback({
       title,
@@ -196,9 +214,13 @@ export default function SongForm(props: IProps) {
               />
             </Flex>
           </FormControl>
-          <FormControl isInvalid={dataError}>
+          <FormControl isInvalid={dataError || chordsError}>
             <FormLabel>Tekst piosenki *</FormLabel>
-            <FormErrorMessage>Sprawdź czy dodałeś tekst!</FormErrorMessage>
+            <FormErrorMessage>
+              {chordsError
+                ? 'W tekście występują nierozpoznane chwyty!'
+                : 'Sprawdź czy dodałeś tekst!'}
+            </FormErrorMessage>
             <Textarea
               value={lyrics}
               height={'10em'}

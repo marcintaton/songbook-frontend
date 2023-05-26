@@ -1,17 +1,4 @@
-const chords = [
-  'A',
-  'B',
-  'H',
-  'C',
-  'Cis',
-  'D',
-  'Dis',
-  'E',
-  'F',
-  'Fis',
-  'G',
-  'Gis',
-];
+import chords from './chords';
 
 export default function transpose(chord: string, shiftBy: number) {
   const isMinor = chord[0].toLowerCase() === chord[0];
