@@ -64,7 +64,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '..', './src/index.html'),
       title: 'Hot Module Replacement',
-      // favicon: './assets/logo.png',
+      favicon: './assets/favicon.png',
     }),
   ],
 };
