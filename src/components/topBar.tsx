@@ -4,6 +4,7 @@ import { AiOutlineEdit, AiOutlineLogin } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { appContext } from './context';
+import TopBarUser from './topBarUser';
 
 export default function TopBar() {
   const navigate = useNavigate();
@@ -59,12 +60,12 @@ export default function TopBar() {
           )}
       </Stack>
       <Stack direction="row" spacing={4}>
-        {!user && (
+        {!user && !location.pathname.includes('/login') && (
           <>
             <Button
               leftIcon={<AiOutlineLogin />}
               colorScheme="purple"
-              variant="ghost"
+              variant="solid"
               size={'md'}
               onClick={() => {
                 navigate(`/login`);
@@ -76,17 +77,7 @@ export default function TopBar() {
         )}
         {user && (
           <>
-            <Button
-              leftIcon={<AiOutlineLogin />}
-              colorScheme="purple"
-              variant="ghost"
-              size={'md'}
-              onClick={() => {
-                navigate(`/login`);
-              }}
-            >
-              Login
-            </Button>
+            <TopBarUser></TopBarUser>
           </>
         )}
       </Stack>

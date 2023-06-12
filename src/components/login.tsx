@@ -1,25 +1,21 @@
 import { Button, Center } from '@chakra-ui/react';
 import { BsGoogle } from 'react-icons/bs';
-import { loginGoogle } from '@src/services/authService';
+import config from '@src/utilities/config';
 
 export default function Login() {
-  async function callLogin() {
-    const result = await loginGoogle();
-    console.log(result);
-  }
-
   return (
     <>
       <Center marginTop={'5em'}>
-        <Button
-          leftIcon={<BsGoogle />}
-          colorScheme="purple"
-          variant="solid"
-          size={'md'}
-          onClick={() => callLogin()}
-        >
-          Zaloguj kontem Google
-        </Button>
+        <a href={`${config.api}/auth/google`}>
+          <Button
+            leftIcon={<BsGoogle />}
+            colorScheme="purple"
+            variant="solid"
+            size={'md'}
+          >
+            Zaloguj kontem Google
+          </Button>
+        </a>
       </Center>
     </>
   );

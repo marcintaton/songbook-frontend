@@ -83,7 +83,6 @@ export default function SongForm(props: IProps) {
     }
 
     const chordsValid = validateChords(lyrics);
-    console.log(chordsValid);
 
     if (!chordsValid) {
       setChordsError(true);

@@ -6,5 +6,9 @@ export function loginGoogle() {
 }
 
 export function getMe() {
-  return apiService.get(`${config.api}/auth/me`);
+  return apiService.get(`${config.api}/auth/me`, { withCredentials: true });
+}
+
+export function logout() {
+  return apiService.get(`${config.api}/auth/logout`, { withCredentials: true });
 }

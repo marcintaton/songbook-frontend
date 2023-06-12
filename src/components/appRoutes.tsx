@@ -4,7 +4,6 @@ import NotFound from '@src/components/notFound';
 import MainView from '@src/components/mainView';
 import Song from '@src/components/song';
 import NewSongView from '@src/components/newSongView';
-import PrintView from './printView';
 import EditSongView from './editSongView';
 import Login from './login';
 import { appContext } from './context';
@@ -19,7 +18,6 @@ export default function AppRoutes() {
         <Route path="/song/:id" element={<Song />} />
         <Route path="/song/:id/edit" element={<EditSongView />} />
         <Route path="/new" element={<NewSongView />} />
-        <Route path="/print" element={<PrintView />} />
         {!user && <Route path="/login" element={<Login />} />}
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<NotFound />} />
