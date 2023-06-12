@@ -9,15 +9,7 @@ export default function TopBar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const context = useContext(appContext);
-  const cartCookie = context.cookies?.printCart;
-
-  const [songsInCart, setSongsInCart] = useState<number>();
-
-  useEffect(() => {
-    if (!cartCookie?.value) setSongsInCart(0);
-    else setSongsInCart(cartCookie.value.length);
-  }, [cartCookie]);
+  const { user } = useContext(appContext);
 
   return (
     <Flex padding={'0.5em'}>
@@ -36,28 +28,6 @@ export default function TopBar() {
       </Stack>
       <Spacer />
       <Stack direction="row" spacing={4}>
-        {!location.pathname.includes('/print') &&
-          !location.pathname.includes('/new') &&
-          !location.pathname.includes('/edit') && (
-            <Button
-              leftIcon={<BsPrinter />}
-              rightIcon={
-                songsInCart !== 0 ? (
-                  <Tag variant="solid" colorScheme="purple">
-                    {songsInCart}
-                  </Tag>
-                ) : (
-                  <></>
-                )
-              }
-              colorScheme="purple"
-              variant="ghost"
-              size={'md'}
-              onClick={() => navigate('/print')}
-            >
-              Drukuj
-            </Button>
-          )}
         {location.pathname === '/' && (
           <>
             <Button
@@ -89,7 +59,7 @@ export default function TopBar() {
           )}
       </Stack>
       <Stack direction="row" spacing={4}>
-        {
+        {!user && (
           <>
             <Button
               leftIcon={<AiOutlineLogin />}
@@ -103,7 +73,22 @@ export default function TopBar() {
               Login
             </Button>
           </>
-        }
+        )}
+        {user && (
+          <>
+            <Button
+              leftIcon={<AiOutlineLogin />}
+              colorScheme="purple"
+              variant="ghost"
+              size={'md'}
+              onClick={() => {
+                navigate(`/login`);
+              }}
+            >
+              Login
+            </Button>
+          </>
+        )}
       </Stack>
     </Flex>
   );
