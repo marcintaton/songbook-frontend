@@ -15,12 +15,9 @@ import Tags from '@src/components/tags';
 import ButtonPanel from '@src/components/buttonPanel';
 import SingleSongPrint from '../utilities/pdfPrintingSchemas/singleSongPrint';
 import OptionalTextSection from './optionalTextSection';
-import { appContext } from './context';
 
 export default function Song() {
   const { id } = useParams();
-  const context = useContext(appContext);
-  const cartCookie = context.cookies?.printCart;
 
   const [song, setSong] = useState<ISong>();
   const [transShift, setTransShift] = useState<number>(0);
@@ -28,7 +25,6 @@ export default function Song() {
   const [lyrics, setLyrics] = useState<ILyricsLine[]>([]);
   const [areChordsVisible, setAreChordsVisible] = useState<boolean>(true);
   const [isMonoFontType, setIsMonoFontType] = useState<boolean>(true);
-  const [songSavedForPrint, setSongSavedForPrint] = useState<boolean>(false);
 
   useEffect(() => {
     apiFetchDelegate<ISong | undefined>(
@@ -37,12 +33,6 @@ export default function Song() {
       {} as ISong,
       [id]
     );
-
-    if (!cartCookie) return;
-
-    if (cartCookie.value.find((x: any) => x.id === id) && !songSavedForPrint) {
-      setSongSavedForPrint(true);
-    }
   }, []);
 
   useEffect(() => {
@@ -51,25 +41,6 @@ export default function Song() {
     const { lyrics: _lyrics } = parseLyrics(song.lyrics, transShift);
     setLyrics(_lyrics);
   }, [transShift, song]);
-
-  function saveSongForPrinting(shouldAdd: boolean) {
-    if (!cartCookie) return;
-
-    const songPresentInCart = cartCookie.value.find((x: any) => x.id === id);
-    if (shouldAdd && !songPresentInCart) {
-      cartCookie.set([
-        ...cartCookie.value,
-        {
-          id,
-          chords: areChordsVisible,
-          monoFont: isMonoFontType,
-          transShift,
-        },
-      ]);
-    } else if (!shouldAdd && songPresentInCart) {
-      cartCookie.set([...cartCookie.value.filter((x) => x.id !== id)]);
-    }
-  }
 
   function savePdf() {
     if (!song) return;
@@ -133,21 +104,6 @@ export default function Song() {
       icon: <Icon as={BsFilePdfFill} />,
       tooltip: 'Drukuj do PDF',
       key: '6',
-    },
-    {
-      action: () => {
-        saveSongForPrinting(!songSavedForPrint);
-        setSongSavedForPrint(!songSavedForPrint);
-      },
-      icon: !songSavedForPrint ? (
-        <Icon as={BsPrinter} />
-      ) : (
-        <Icon as={BsPrinterFill} />
-      ),
-      tooltip: !songSavedForPrint
-        ? 'Zapisz do kolejki wydruku (WIP)'
-        : 'Usuń z kolejki wydruku (WIP)',
-      key: '7',
     },
   ];
 
