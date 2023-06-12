@@ -1,6 +1,6 @@
 import { Flex, Spacer, Stack, Button, Tag } from '@chakra-ui/react';
 import { BsMusicNote, BsPlusLg, BsPrinter } from 'react-icons/bs';
-import { AiOutlineEdit } from 'react-icons/ai';
+import { AiOutlineEdit, AiOutlineLogin } from 'react-icons/ai';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { appContext } from './context';
@@ -87,6 +87,23 @@ export default function TopBar() {
               </Button>
             </>
           )}
+      </Stack>
+      <Stack direction="row" spacing={4}>
+        {
+          <>
+            <Button
+              leftIcon={<AiOutlineLogin />}
+              colorScheme="purple"
+              variant="ghost"
+              size={'md'}
+              onClick={() => {
+                navigate(`/login`);
+              }}
+            >
+              Login
+            </Button>
+          </>
+        }
       </Stack>
     </Flex>
   );
