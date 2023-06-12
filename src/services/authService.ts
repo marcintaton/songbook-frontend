@@ -2,7 +2,7 @@ import config from '@src/utilities/config';
 import apiService from './apiService';
 
 export function loginGoogle() {
-  return apiService.get(`${config.api}/auth/google`);
+  return apiService.get(`${config.api}/auth/google`, { withCredentials: true });
 }
 
 export function getMe() {
