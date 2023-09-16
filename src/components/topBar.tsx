@@ -59,7 +59,7 @@ export default function TopBar() {
             </>
           )}
       </Stack>
-      <Stack direction="row" spacing={4}>
+      {/* <Stack direction="row" spacing={4}>
         {!user && !location.pathname.includes('/login') && (
           <>
             <Button
@@ -80,7 +80,7 @@ export default function TopBar() {
             <TopBarUser></TopBarUser>
           </>
         )}
-      </Stack>
+      </Stack> */}
     </Flex>
   );
 }

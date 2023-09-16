@@ -1,4 +1,4 @@
 {
-  "name": "dev",
-  "api": "https://songbook-backend-production.up.railway.app/api"
+  "name": "prod",
+  "api": "https://songbook.fly.dev/api"
 }
